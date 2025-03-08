@@ -11,10 +11,9 @@ export default function Login() {
   const [form] = Form.useForm();
   const router = useRouter();
 
-  const handleLogin = (values: any) => {
-    // Handle login logic here, for example, send to API
-    console.log("Login Values:", values);
-    // Navigate to home page on successful login
+  const handleLogin = () => {
+
+  
     router.push("/");
   };
 
