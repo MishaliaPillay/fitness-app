@@ -12,8 +12,6 @@ export default function Login() {
   const router = useRouter();
 
   const handleLogin = () => {
-
-  
     router.push("/");
   };
 
@@ -34,7 +32,7 @@ export default function Login() {
         <Form
           form={form}
           name="login"
-          initialValues={{ role: "client" }}
+        
           onFinish={handleLogin}
           layout="vertical"
         >
@@ -74,11 +72,7 @@ export default function Login() {
             name="role"
             rules={[{ required: true, message: "Please select your role!" }]}
           >
-            <Select
-              placeholder="Select your role"
-              size="large"
-             
-            >
+            <Select placeholder="Select your role" size="large">
               <Select.Option value="trainer">Trainer</Select.Option>
               <Select.Option value="client">Client</Select.Option>
             </Select>
