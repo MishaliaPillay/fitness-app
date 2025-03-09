@@ -1,3 +1,4 @@
+"use client"
 import { ITrainer, ITrainerStateContext } from "./context";
 import { createAction } from "redux-actions";
 //make enums defining the actions that can be dispatched

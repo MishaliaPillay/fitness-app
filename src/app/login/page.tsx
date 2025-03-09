@@ -3,30 +3,60 @@ import { Form, Input, Button, Select, Typography, Card } from "antd";
 import { UserOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
 import { LoginForm } from "@/interfaces/roles";
+import { ITrainer } from "@/providers/trainer/context";
+import { useTrainerActions } from "@/providers/trainer";
 
 const { Title } = Typography;
 
 export default function Login() {
   const [form] = Form.useForm();
   const router = useRouter();
+  const { createTrainer } = useTrainerActions();
 
-  const handleLogin = (values: LoginForm) => {
+  const handleLogin = async (values: LoginForm) => {
     const { email, username, password, role } = values;
 
     // Store the entire user object in localStorage
     const user = { email, username, password, role };
-    localStorage.setItem("currentUser", JSON.stringify(user)); // Save the full user object as a string in localStorage
+    localStorage.setItem("currentUser", JSON.stringify(user)); // Save user object
 
-    console.log(localStorage.getItem("currentUser")); // Check if data is stored correctly
+    try {
+      // Register the trainer (or login if it's already registered)
+      const newTrainer: ITrainer = {
+        id: "",
+        Trainername: values.username,
+        email: values.email,
+        password: values.password,
+        contactNumber: "",
+        planType: "",
+        activeState: false,
+        trial: false,
+        policiesAccepted: false,
+        role: values.role,
+      };
 
-    // Redirect based on the role of the user
-    if (role === "trainer") {
-      router.push("/trainer");
-    } else if (role === "client") {
-      router.push("/client");
-    } else {
-      // Handle invalid role
-      router.push("/login");
+      await createTrainer([newTrainer]); // Create trainer
+
+      // Assuming your API returns the JWT token after successful registration
+      const response = await createTrainer([newTrainer]);
+
+      if (response.data.token) {
+        // Store JWT token in localStorage
+        localStorage.setItem("jwtToken", response.data.token);
+        console.log("JWT Token Stored:", response.data.token);
+      }
+
+      // Redirect based on the role
+      if (role === "trainer") {
+        router.push("/trainer");
+      } else if (role === "client") {
+        router.push("/client");
+      } else {
+        // Handle invalid role
+        router.push("/login");
+      }
+    } catch (error) {
+      console.error("Failed to create user:", error);
     }
   };
 

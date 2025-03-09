@@ -1,3 +1,4 @@
+"use client";
 import { getAxiosInstance } from "../../utils/axios-instance";
 
 import {
@@ -64,7 +65,7 @@ export const TrainerProvider = ({
 
   const createTrainer = async (trainer: ITrainer[]) => {
     dispatch(createTrainerPending());
-    const endpoint = `/Trainers`;
+    const endpoint = `/api/users/register`;
     await instance
       .post(endpoint, trainer)
       .then((response) => {

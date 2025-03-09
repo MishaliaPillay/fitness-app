@@ -1,3 +1,4 @@
+"use client";
 import { createContext } from "react";
 
 // make a Trainer object
@@ -28,11 +29,11 @@ export interface ITrainerStateContext {
 //define the actions that will be performed on Trainers
 
 export interface ITrainerActionContext {
-  getTrainers: () => void;
-  getTrainer: (id: string) => void;
-  createTrainer: (trainers: ITrainer[]) => void;
-  updateTrainer: (trainer: ITrainer) => void;
-  deleteTrainer: (id: string) => void;
+  getTrainers: () => any;
+  getTrainer: (id: string) => any;
+  createTrainer: (trainers: ITrainer[]) => any;
+  updateTrainer: (trainer: ITrainer) => any;
+  deleteTrainer: (id: string) => any;
 }
 
 //initial state with default  values
