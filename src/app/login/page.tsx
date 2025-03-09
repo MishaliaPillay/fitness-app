@@ -1,8 +1,8 @@
-"use client"; // Required for useRouter in a Client Component
+"use client";
 import { Form, Input, Button, Select, Typography, Card } from "antd";
 import { UserOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
-import { LoginForm } from "@/interfaces/roles"; // Ensure correct import path
+import { LoginForm } from "@/interfaces/roles";
 
 const { Title } = Typography;
 
@@ -13,13 +13,21 @@ export default function Login() {
   const handleLogin = (values: LoginForm) => {
     const { email, username, password, role } = values;
 
-    const user: LoginForm = { email, username, password, role };
-    localStorage.setItem("currentUser", JSON.stringify(user.role));
+    // Store the entire user object in localStorage
+    const user = { email, username, password, role };
+    localStorage.setItem("currentUser", JSON.stringify(user)); // Save the full user object as a string in localStorage
 
-    console.log(localStorage.getItem("currentUser"));
+    console.log(localStorage.getItem("currentUser")); // Check if data is stored correctly
 
-    // Redirect to home page
-    router.push("/");
+    // Redirect based on the role of the user
+    if (role === "trainer") {
+      router.push("/trainer");
+    } else if (role === "client") {
+      router.push("/client");
+    } else {
+      // Handle invalid role
+      router.push("/login");
+    }
   };
 
   return (
