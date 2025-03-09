@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Layout, Menu, Breadcrumb, Button } from "antd";
-import { UserOutlined, UnorderedListOutlined } from "@ant-design/icons";
+
 import withAuth from "@/hoc/with-auth";
 const { Header, Content, Sider } = Layout;
 
@@ -22,27 +22,24 @@ const ProtectedClientLayout = withAuth(
           >
             <h2>Client Dashboard</h2>
           </div>
-          <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
-            <Menu.Item key="1" icon={<UserOutlined />}>
-              Dashboard
-            </Menu.Item>
-            <Menu.Item key="2" icon={<UnorderedListOutlined />}>
-              Meal Plans
-            </Menu.Item>
-            <Menu.Item key="3" icon={<UnorderedListOutlined />}>
-              Progress
-            </Menu.Item>
-          </Menu>
+          <Menu
+            theme="dark"
+            mode="inline"
+            defaultSelectedKeys={["1"]}
+            items={[
+              { key: "1", label: "Dashboard" },
+              { key: "2", label: "Clients" },
+              { key: "3", label: "Meal Plans" },
+            ]}
+          />
         </Sider>
         <Layout style={{ padding: "0 24px 24px" }}>
           <Header style={{ padding: 0, background: "#fff" }}>
             <h2>Client Dashboard</h2>
           </Header>
           <Content style={{ padding: "0 50px", marginTop: 16 }}>
-            <Breadcrumb style={{ margin: "16px 0" }}>
-              <Breadcrumb.Item>Home</Breadcrumb.Item>
-              <Breadcrumb.Item>Client</Breadcrumb.Item>
-            </Breadcrumb>
+            <Breadcrumb items={[{ title: "Home" }, { title: "Trainer" }]} />
+
             <div style={{ background: "#fff", padding: 24, minHeight: 280 }}>
               <h3>Your Meal Plans</h3>
               <ul>
