@@ -1,20 +1,22 @@
 "use client";
 
-import { useRouter } from "next/navigation"; // Use correct import
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface WithAuthProps {
-  allowedRoles?: string[]; // Define the allowed roles for a route
+  allowedRoles?: string[]; // Define allowed roles for a route
 }
 
-const withAuth = (
-  WrappedComponent: React.ComponentType,
+function withAuth<P extends object>(
+  WrappedComponent: React.ComponentType<P>,
   { allowedRoles = [] }: WithAuthProps = {}
-) => {
-  const AuthComponent = (props: any) => {
+) {
+  const AuthComponent = (props: P) => {
     const router = useRouter();
     const [isClient, setIsClient] = useState(false);
-    const [currentUser, setCurrentUser] = useState<any>(null);
+    const [currentUser, setCurrentUser] = useState<{ role: string } | null>(
+      null
+    );
 
     useEffect(() => {
       setIsClient(true);
@@ -73,6 +75,6 @@ const withAuth = (
   AuthComponent.displayName = `withAuth(${componentName})`;
 
   return AuthComponent;
-};
+}
 
 export default withAuth;
