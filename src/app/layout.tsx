@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ConfigProvider, theme } from "antd";
+import { TrainerProvider } from "@/providers/trainer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -55,11 +56,13 @@ export default function RootLayout({
 }>) {
   return (
     <ConfigProvider theme={fitnessColors}>
-      <html lang="en">
-        <body className={`${geistSans.variable} ${geistMono.variable}`}>
-          {children}
-        </body>
-      </html>
+      <TrainerProvider>
+        <html lang="en">
+          <body className={`${geistSans.variable} ${geistMono.variable}`}>
+            {children}
+          </body>
+        </html>
+      </TrainerProvider>
     </ConfigProvider>
   );
 }

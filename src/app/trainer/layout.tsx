@@ -13,7 +13,7 @@ type Props = {
 
 // Wrap the layout component with withAuth HOC
 const ProtectedTrainerLayout = withAuth(
-  ({ children }: Props) => {
+  ({ }: Props) => {
     return (
       <Layout style={{ minHeight: "100vh" }}>
         <Sider width={250} theme="dark">
@@ -57,7 +57,7 @@ const ProtectedTrainerLayout = withAuth(
                 </Button>
               </Form>
             </div>
-            {children}
+           
           </Content>
         </Layout>
       </Layout>
