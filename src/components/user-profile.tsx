@@ -12,7 +12,7 @@ const UserProfile = () => {
   }, []); // Add getUser as a dependency to avoid lint warnings
 
   useEffect(() => {
-    console.log("User data:", user);
+   // console.log("User data:", user);
   }, [user]); // Log user data whenever it changes
 
   if (isPending) return <p style={{ color: "red" }}>Loading user details...</p>;

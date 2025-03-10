@@ -44,7 +44,7 @@ export const TrainerProvider = ({
         dispatch(getTrainersSuccess(response.data));
       })
       .catch((error) => {
-        console.error(error);
+       // console.error(error);
         dispatch(getTrainersError());
       });
   };
@@ -58,7 +58,7 @@ export const TrainerProvider = ({
         dispatch(getTrainerSuccess(response.data));
       })
       .catch((error) => {
-        console.error(error);
+        //console.error(error);
         dispatch(getTrainerError());
       });
   };
@@ -68,12 +68,12 @@ export const TrainerProvider = ({
     dispatch(createTrainerPending());
     const endpoint="https://body-vault-server-b9ede5286d4c.herokuapp.com/api/users/register";
     try {
-        console.log('Sending Trainer data',Trainer);
+      //  console.log('Sending Trainer data',Trainer);
         const response=await axios.post(endpoint,Trainer);
-        console.log('Response',response.data);
+      //  console.log('Response',response.data);
         dispatch(createTrainerSuccess(response.data.data));
     } catch (error) {
-        console.error("Error during signup:",error.response?.data.message ||error)
+       // console.error("Error during signup:",error.response?.data.message ||error)
         dispatch(createTrainerError());  
     }
 };
@@ -89,7 +89,7 @@ export const TrainerProvider = ({
         dispatch(updateTrainerSuccess(response.data));
       })
       .catch((error) => {
-        console.error(error);
+       // console.error(error);
         dispatch(updateTrainerError());
       });
   };
@@ -103,7 +103,7 @@ export const TrainerProvider = ({
         dispatch(deleteTrainerSuccess(response.data));
       })
       .catch((error) => {
-        console.error(error);
+        //console.error(error);
         dispatch(deleteTrainerError());
       });
   };

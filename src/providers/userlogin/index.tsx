@@ -35,7 +35,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         dispatch(getUsersSuccess(response.data));
       })
       .catch((error) => {
-        console.error(error);
+        // console.error(error);
         dispatch(getUsersError());
       });
   };
@@ -59,13 +59,13 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         },
       });
 
-      console.log("User Data Received:", response.data);
+      // console.log("User Data Received:", response.data);
       dispatch(getUserSuccess(response.data.data));
     } catch (error) {
-      console.error(
-        " Error fetching user details:",
-        error.response?.data?.message || error
-      );
+      // console.error(
+      //   " Error fetching user details:",
+      //   error.response?.data?.message || error
+      // );
       dispatch(getUserError());
     }
   };
@@ -75,24 +75,24 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     const endpoint =
       "https://body-vault-server-b9ede5286d4c.herokuapp.com/api/users/login";
     try {
-      console.log("getting User data", user);
+      //console.log("getting User data", user);
       const response = await axios.post<ILoginResponse>(endpoint, user);
-      console.log("Response", response.data);
+      //  console.log("Response", response.data);
       const token = response.data.data.token;
       if (token) {
-        console.log("session This where token stored");
+        //  console.log("session This where token stored");
         sessionStorage.setItem("jwt", token);
       } else {
-        console.error("token not received");
+        //  console.error("token not received");
       }
       //dispatch(getUserSuccess(response.data.data));
       dispatch(verifyUserSuccess(response.data));
-      console.log(response);
+      // console.log(response);
     } catch (error) {
-      console.error(
-        "Error during login:",
-        error.response?.data?.message || error
-      );
+      // console.error(
+      //   "Error during login:",
+      //   error.response?.data?.message || error
+      // );
       dispatch(verifyUserError());
     }
   };
