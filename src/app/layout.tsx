@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ConfigProvider, theme } from "antd";
 import { TrainerProvider } from "@/providers/trainer";
+import { UserProvider } from "@/providers/userlogin";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -57,11 +58,13 @@ export default function RootLayout({
   return (
     <ConfigProvider theme={fitnessColors}>
       <TrainerProvider>
-        <html lang="en">
-          <body className={`${geistSans.variable} ${geistMono.variable}`}>
-            {children}
-          </body>
-        </html>
+        <UserProvider>
+          <html lang="en">
+            <body className={`${geistSans.variable} ${geistMono.variable}`}>
+              {children}
+            </body>
+          </html>
+        </UserProvider>
       </TrainerProvider>
     </ConfigProvider>
   );

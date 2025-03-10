@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import ProtectedTrainerLayout from "./layout"; // Now protected
+import UserProfile from "@/components/user-profile";
 
 const TrainerDashboard: React.FC = () => {
   return (
@@ -10,6 +11,7 @@ const TrainerDashboard: React.FC = () => {
         <h3>Manage Clients and Meal Plans</h3>
         <p>Here you can manage your clients and assign meal plans.</p>
       </div>
+      <UserProfile />
     </ProtectedTrainerLayout>
   );
 };
