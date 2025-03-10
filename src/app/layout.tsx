@@ -4,6 +4,7 @@ import "./globals.css";
 import { ConfigProvider, theme } from "antd";
 import { TrainerProvider } from "@/providers/trainer";
 import { UserProvider } from "@/providers/userlogin";
+import { ClientProvider } from "@/providers/client";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -58,13 +59,15 @@ export default function RootLayout({
   return (
     <ConfigProvider theme={fitnessColors}>
       <TrainerProvider>
-        <UserProvider>
-          <html lang="en">
-            <body className={`${geistSans.variable} ${geistMono.variable}`}>
-              {children}
-            </body>
-          </html>
-        </UserProvider>
+        <ClientProvider>
+          <UserProvider>
+            <html lang="en">
+              <body className={`${geistSans.variable} ${geistMono.variable}`}>
+                {children}
+              </body>
+            </html>
+          </UserProvider>
+        </ClientProvider>
       </TrainerProvider>
     </ConfigProvider>
   );
