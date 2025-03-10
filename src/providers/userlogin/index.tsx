@@ -47,10 +47,8 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
     try {
       const token = sessionStorage.getItem("jwt")?.trim();
-      console.log("🔍 Token before request:", token);
 
       if (!token) {
-        console.error("❌ No token found in sessionStorage");
         dispatch(getUserError());
         return;
       }
