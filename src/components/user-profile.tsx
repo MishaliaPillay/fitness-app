@@ -9,7 +9,7 @@ const UserProfile = () => {
 
   useEffect(() => {
     getUser();
-  }, [getUser]);
+  }, []);
 
   if (isPending) return <p style={{ color: "red" }}>Loading user details...</p>;
   if (isError)
@@ -19,15 +19,17 @@ const UserProfile = () => {
   return (
     <div style={{ color: "red" }}>
       <h2>User Profile</h2>
-      <p>
-        <strong>Name:</strong> {user.name}
-      </p>
-      <p>
-        <strong>Role:</strong> {user.role}
-      </p>
-      <p>
-        <strong>Email:</strong> {user.email}
-      </p>
+      <ul>
+        <li>
+          <strong>Name:</strong> {user.name}
+        </li>
+        <li>
+          <strong>Role:</strong> {user.role}
+        </li>
+        <li>
+          <strong>Email:</strong> {user.email}
+        </li>
+      </ul>
     </div>
   );
 };
