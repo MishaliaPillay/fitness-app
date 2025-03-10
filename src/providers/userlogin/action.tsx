@@ -14,9 +14,9 @@ export enum UserActionEnums {
   getUserSuccess = "GET_User_SUCCESS",
   getUserError = "GET_User_ERROR",
 
-  createUserPending = "CREATE_User_PENDING",
-  createUserSuccess = "CREATE_User_SUCCESS",
-  createUserError = "CREATE_User_ERROR",
+  verifyUserPending = "CREATE_User_PENDING",
+  verifyUserSuccess = "CREATE_User_SUCCESS",
+  verifyUserError = "CREATE_User_ERROR",
 }
 
 // createAction<PayloadType>(actionType, payloadCreator)
@@ -66,13 +66,13 @@ export const getUserError = createAction<IUserStateContext>(
   () => ({ isPending: false, isSuccess: false, isError: true })
 );
 
-export const createUserPending = createAction<IUserStateContext>(
-  UserActionEnums.createUserPending,
+export const verifyUserPending = createAction<IUserStateContext>(
+  UserActionEnums.verifyUserPending,
   () => ({ isPending: true, isSuccess: false, isError: false })
 );
 
-export const createUserSuccess = createAction<IUserStateContext, IUser>(
-  UserActionEnums.createUserSuccess,
+export const verifyUserSuccess = createAction<IUserStateContext, IUser>(
+  UserActionEnums.verifyUserSuccess,
   (user: IUser) => ({
     isPending: false,
     isSuccess: true,
@@ -81,7 +81,7 @@ export const createUserSuccess = createAction<IUserStateContext, IUser>(
   })
 );
 
-export const createUserError = createAction<IUserStateContext>(
-  UserActionEnums.createUserError,
+export const verifyUserError = createAction<IUserStateContext>(
+  UserActionEnums.verifyUserError,
   () => ({ isPending: false, isSuccess: false, isError: true })
 );

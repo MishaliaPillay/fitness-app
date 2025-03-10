@@ -60,7 +60,7 @@ export default function SignUp() {
     >
       <Card style={{ width: 400, padding: "24px" }}>
         <Title level={2} style={{ textAlign: "center", marginBottom: 32 }}>
-          Login
+          Sign Up
         </Title>
         <Form form={form} name="login" onFinish={signUp} layout="vertical">
           <Form.Item
@@ -107,7 +107,7 @@ export default function SignUp() {
 
           <Form.Item>
             <Button type="primary" htmlType="submit" size="large" block>
-              Log in
+              Sign Up
             </Button>
           </Form.Item>
         </Form>

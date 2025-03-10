@@ -17,9 +17,9 @@ import {
   getUserError,
   getUserPending,
   getUserSuccess,
-  createUserPending,
-  createUserError,
-  createUserSuccess,
+  verifyUserPending,
+  verifyUserError,
+  verifyUserSuccess,
 } from "./action";
 import axios from "axios";
 
@@ -40,8 +40,40 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       });
   };
 
-  const getUser = async (user: IUser) => {
+  const getUser = async () => {
     dispatch(getUserPending());
+    const endpoint =
+      "https://body-vault-server-b9ede5286d4c.herokuapp.com/api/user/current";
+
+    try {
+      const token = sessionStorage.getItem("jwt")?.trim();
+      console.log("🔍 Token before request:", token);
+
+      if (!token) {
+        console.error("❌ No token found in sessionStorage");
+        dispatch(getUserError());
+        return;
+      }
+
+      const response = await axios.get(endpoint, {
+        headers: {
+          Authorization: `${token}`,
+        },
+      });
+
+      console.log("User Data Received:", response.data);
+      dispatch(getUserSuccess(response.data.data));
+    } catch (error) {
+      console.error(
+        " Error fetching user details:",
+        error.response?.data?.message || error
+      );
+      dispatch(getUserError());
+    }
+  };
+
+  const verifyUser = async (user: IUser) => {
+    dispatch(verifyUserPending());
     const endpoint =
       "https://body-vault-server-b9ede5286d4c.herokuapp.com/api/users/login";
     try {
@@ -56,32 +88,14 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         console.error("token not received");
       }
       //dispatch(getUserSuccess(response.data.data));
-      dispatch(getUserSuccess(response.data));
+      dispatch(verifyUserSuccess(response.data));
       console.log(response);
     } catch (error) {
       console.error(
         "Error during login:",
         error.response?.data?.message || error
       );
-      dispatch(getUserError());
-    }
-  };
-
-  const createUser = async (user: IUser) => {
-    dispatch(createUserPending());
-    const endpoint =
-      "https://body-vault-server-b9ede5286d4c.herokuapp.com/api/users/register";
-    try {
-      console.log("Sending User data", user);
-      const response = await axios.post(endpoint, user);
-      console.log("Response", response.data);
-      dispatch(createUserSuccess(response.data.data));
-    } catch (error) {
-      console.error(
-        "Error during signup:",
-        error.response?.data.message || error
-      );
-      dispatch(createUserError());
+      dispatch(verifyUserError());
     }
   };
 
@@ -91,7 +105,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         value={{
           getUsers,
           getUser,
-          createUser,
+          verifyUser,
         }}
       >
         {children}

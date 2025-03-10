@@ -4,8 +4,17 @@ import { createContext } from "react";
 // make a Userobject
 
 export interface IUser {
+  id?: string;
+  name?: string;
   email: string;
   password: string;
+  role?: string;
+  contactNumber?: string;
+  activeState?: boolean;
+  planType?: string;
+  trial?: boolean;
+  policiesAccepted?: boolean;
+  date?: string;
 }
 
 //make a shape for the context
@@ -22,8 +31,8 @@ export interface IUserStateContext {
 
 export interface IUserActionContext {
   getUsers: () => void;
-  getUser: (user: IUser) => void;
-  createUser: (user: IUser) => void;
+  getUser: () => void;
+  verifyUser: (user: IUser) => void;
 }
 
 export interface ILoginResponse {

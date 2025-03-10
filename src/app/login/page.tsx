@@ -11,7 +11,7 @@ const { Title } = Typography;
 export default function Login() {
   const [form] = Form.useForm();
   const router = useRouter();
-  const { getUser } = useUserActions();
+  const { verifyUser } = useUserActions();
 
   const handleLogin = async (values: LoginForm) => {
     const { email, password, role } = values;
@@ -25,7 +25,7 @@ export default function Login() {
         password: values.password,
       };
 
-      getUser(signedUser);
+      verifyUser(signedUser);
 
       if (role === "trainer") {
         router.push("/trainer");
