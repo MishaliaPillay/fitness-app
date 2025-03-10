@@ -8,12 +8,12 @@ import { useTrainerActions } from "@/providers/trainer";
 
 const { Title } = Typography;
 
-export default function Login() {
+export default function SignUp() {
   const [form] = Form.useForm();
   const router = useRouter();
   const { createTrainer } = useTrainerActions();
 
-  const handleLogin = async (values: LoginForm) => {
+  const signUp = async (values: LoginForm) => {
     const { email, username, password, role } = values;
 
     const user = { email, username, password, role };
@@ -62,7 +62,7 @@ export default function Login() {
         <Title level={2} style={{ textAlign: "center", marginBottom: 32 }}>
           Login
         </Title>
-        <Form form={form} name="login" onFinish={handleLogin} layout="vertical">
+        <Form form={form} name="login" onFinish={signUp} layout="vertical">
           <Form.Item
             name="email"
             rules={[

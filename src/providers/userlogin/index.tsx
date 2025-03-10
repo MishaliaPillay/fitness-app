@@ -1,11 +1,12 @@
 "use client";
-import { getAxiosInstance } from "../../utils/axios-instance";
+//import { getAxiosInstance } from "../../utils/axios-instance";
 
 import {
   INITIAL_STATE,
   IUser,
   UserActionContext,
   UserStateContext,
+  ILoginResponse,
 } from "./context";
 import { UserReducer } from "./reducer";
 import { useContext, useReducer } from "react";
@@ -18,15 +19,13 @@ import {
   getUserSuccess,
   createUserPending,
   createUserError,
-
   createUserSuccess,
-  
 } from "./action";
 import axios from "axios";
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [state, dispatch] = useReducer(UserReducer, INITIAL_STATE);
-  const instance = getAxiosInstance();
+  // const instance = getAxiosInstance();
 
   const getUsers = async () => {
     dispatch(getUsersPending());
@@ -41,18 +40,31 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       });
   };
 
-  const getUser = async (id: string) => {
+  const getUser = async (user: IUser) => {
     dispatch(getUserPending());
-    const endpoint = `/Users/${id}`;
-    await instance
-      .get(endpoint)
-      .then((response) => {
-        dispatch(getUserSuccess(response.data));
-      })
-      .catch((error) => {
-        console.error(error);
-        dispatch(getUserError());
-      });
+    const endpoint =
+      "https://body-vault-server-b9ede5286d4c.herokuapp.com/api/users/login";
+    try {
+      console.log("getting User data", user);
+      const response = await axios.post<ILoginResponse>(endpoint, user);
+      console.log("Response", response.data);
+      const token = response.data.data.token;
+      if (token) {
+        console.log("session This where token stored");
+        sessionStorage.setItem("jwt", token);
+      } else {
+        console.error("token not received");
+      }
+      //dispatch(getUserSuccess(response.data.data));
+      dispatch(getUserSuccess(response.data));
+      console.log(response);
+    } catch (error) {
+      console.error(
+        "Error during login:",
+        error.response?.data?.message || error
+      );
+      dispatch(getUserError());
+    }
   };
 
   const createUser = async (user: IUser) => {
@@ -73,8 +85,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-
-  
   return (
     <UserStateContext.Provider value={state}>
       <UserActionContext.Provider
@@ -82,7 +92,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
           getUsers,
           getUser,
           createUser,
-       
         }}
       >
         {children}

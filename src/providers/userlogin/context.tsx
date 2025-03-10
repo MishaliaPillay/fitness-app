@@ -22,9 +22,16 @@ export interface IUserStateContext {
 
 export interface IUserActionContext {
   getUsers: () => void;
-  getUser: (id: string) => void;
-  createUser: (User: IUser) => void;
+  getUser: (user: IUser) => void;
+  createUser: (user: IUser) => void;
+}
 
+export interface ILoginResponse {
+  status: number;
+  message: string;
+  data: {
+    token: string;
+  };
 }
 
 //initial state with default  values

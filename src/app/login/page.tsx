@@ -1,39 +1,31 @@
 "use client";
 import { Form, Input, Button, Select, Typography, Card } from "antd";
-import { UserOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
+import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
 import { LoginForm } from "@/interfaces/roles";
-import { ITrainer } from "@/providers/trainer/context";
-import { useTrainerActions } from "@/providers/trainer";
+import { IUser } from "@/providers/userlogin/context";
+import { useUserActions } from "@/providers/userlogin";
 
 const { Title } = Typography;
 
 export default function Login() {
   const [form] = Form.useForm();
   const router = useRouter();
-  const { createTrainer } = useTrainerActions();
+  const { getUser } = useUserActions();
 
   const handleLogin = async (values: LoginForm) => {
-    const { email, username, password, role } = values;
+    const { email, password, role } = values;
 
-    const user = { email, username, password, role };
+    const user = { email, password, role };
     localStorage.setItem("currentUser", JSON.stringify(user));
 
     try {
-      const newTrainer: ITrainer = {
-        name: values.username,
+      const signedUser: IUser = {
         email: values.email,
         password: values.password,
-        confirmPassword: values.password,
-        role: values.role,
-        contactNumber: "",
-        planType: "",
-        activeState: false,
-        trial: false,
-        policiesAccepted: false,
       };
-      debugger;
-      await createTrainer(newTrainer);
+
+      getUser(signedUser);
 
       if (role === "trainer") {
         router.push("/trainer");
@@ -71,17 +63,6 @@ export default function Login() {
             ]}
           >
             <Input prefix={<MailOutlined />} placeholder="Email" size="large" />
-          </Form.Item>
-
-          <Form.Item
-            name="username"
-            rules={[{ required: true, message: "Please input your username!" }]}
-          >
-            <Input
-              prefix={<UserOutlined />}
-              placeholder="Username"
-              size="large"
-            />
           </Form.Item>
 
           <Form.Item

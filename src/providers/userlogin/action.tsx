@@ -71,9 +71,9 @@ export const createUserPending = createAction<IUserStateContext>(
   () => ({ isPending: true, isSuccess: false, isError: false })
 );
 
-export const createUserSuccess = createAction<IUserStateContext, IUser[]>(
+export const createUserSuccess = createAction<IUserStateContext, IUser>(
   UserActionEnums.createUserSuccess,
-  (user: IUser[]) => ({
+  (user: IUser) => ({
     isPending: false,
     isSuccess: true,
     isError: false,
