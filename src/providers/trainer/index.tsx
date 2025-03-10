@@ -44,7 +44,7 @@ export const TrainerProvider = ({
         dispatch(getTrainersSuccess(response.data));
       })
       .catch((error) => {
-       // console.error(error);
+        console.error(error);
         dispatch(getTrainersError());
       });
   };
@@ -58,27 +58,28 @@ export const TrainerProvider = ({
         dispatch(getTrainerSuccess(response.data));
       })
       .catch((error) => {
-        //console.error(error);
+        console.error(error);
         dispatch(getTrainerError());
       });
   };
 
-
   const createTrainer = async (Trainer: ITrainer) => {
     dispatch(createTrainerPending());
-    const endpoint="https://body-vault-server-b9ede5286d4c.herokuapp.com/api/users/register";
+    const endpoint =
+      "https://body-vault-server-b9ede5286d4c.herokuapp.com/api/users/register";
     try {
       //  console.log('Sending Trainer data',Trainer);
-        const response=await axios.post(endpoint,Trainer);
+      const response = await axios.post(endpoint, Trainer);
       //  console.log('Response',response.data);
-        dispatch(createTrainerSuccess(response.data.data));
+      dispatch(createTrainerSuccess(response.data.data));
     } catch (error) {
-       // console.error("Error during signup:",error.response?.data.message ||error)
-        dispatch(createTrainerError());  
+      console.error(
+        "Error during signup:",
+        error.response?.data.message || error
+      );
+      dispatch(createTrainerError());
     }
-};
-
-
+  };
 
   const updateTrainer = async (trainer: ITrainer) => {
     dispatch(updateTrainerPending());
@@ -89,7 +90,7 @@ export const TrainerProvider = ({
         dispatch(updateTrainerSuccess(response.data));
       })
       .catch((error) => {
-       // console.error(error);
+        console.error(error);
         dispatch(updateTrainerError());
       });
   };
@@ -103,7 +104,7 @@ export const TrainerProvider = ({
         dispatch(deleteTrainerSuccess(response.data));
       })
       .catch((error) => {
-        //console.error(error);
+        console.error(error);
         dispatch(deleteTrainerError());
       });
   };

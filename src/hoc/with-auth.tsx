@@ -29,7 +29,7 @@ function withAuth<P extends object>(
             const user = JSON.parse(storedUser);
             setCurrentUser(user);
           } catch (error) {
-           // console.error("Error parsing user data from localStorage", error);
+           console.error("Error parsing user data from localStorage", error);
             setCurrentUser(null);
           }
         }
@@ -57,7 +57,7 @@ function withAuth<P extends object>(
           router.push("/login");
         }
       }
-    }, [isClient, currentUser, allowedRoles, router]);
+    }, [isClient, currentUser,  router]);
 
     if (
       !isClient ||

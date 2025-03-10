@@ -8,12 +8,8 @@ const UserProfile = () => {
   const { getUser } = useUserActions();
 
   useEffect(() => {
-    getUser(); // No argument needed
-  }, []); // Add getUser as a dependency to avoid lint warnings
-
-  useEffect(() => {
-   // console.log("User data:", user);
-  }, [user]); // Log user data whenever it changes
+    getUser();
+  }, [getUser]);
 
   if (isPending) return <p style={{ color: "red" }}>Loading user details...</p>;
   if (isError)
@@ -22,8 +18,6 @@ const UserProfile = () => {
 
   return (
     <div style={{ color: "red" }}>
-      {" "}
-      {/* Apply red color to everything */}
       <h2>User Profile</h2>
       <p>
         <strong>Name:</strong> {user.name}

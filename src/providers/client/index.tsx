@@ -37,7 +37,7 @@ export const ClientProvider = ({ children }: { children: React.ReactNode }) => {
         dispatch(getClientsSuccess(response.data));
       })
       .catch((error) => {
-       // console.error(error);
+        console.error(error);
         dispatch(getClientsError());
       });
   };
@@ -51,7 +51,7 @@ export const ClientProvider = ({ children }: { children: React.ReactNode }) => {
         dispatch(getClientSuccess(response.data));
       })
       .catch((error) => {
-        //console.error(error);
+        console.error(error);
         dispatch(getClientError());
       });
   };
@@ -81,10 +81,10 @@ export const ClientProvider = ({ children }: { children: React.ReactNode }) => {
     //  console.log("Response", response.data);
       dispatch(createClientSuccess(response.data.data));
     } catch (error) {
-     // console.error(
-    //     "Error during signup:",
-    //     error.response?.data.message || error
-    //   );
+     console.error(
+        "Error during signup:",
+        error.response?.data.message || error
+      );
       dispatch(createClientError());
     }
   };
@@ -98,7 +98,7 @@ export const ClientProvider = ({ children }: { children: React.ReactNode }) => {
         dispatch(signClientInSuccess(response.data));
       })
       .catch((error) => {
-       // console.error(error);
+        console.error(error);
         dispatch(signClientInError());
       });
   };

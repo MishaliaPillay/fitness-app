@@ -44,7 +44,7 @@ export default function SignUp() {
         router.push("/login");
       }
     } catch (error) {
-     // console.error("Failed to create user:", error);
+     console.error("Failed to create user:", error);
     }
   };
 

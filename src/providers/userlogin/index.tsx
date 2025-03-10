@@ -35,7 +35,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         dispatch(getUsersSuccess(response.data));
       })
       .catch((error) => {
-        // console.error(error);
+        console.error(error);
         dispatch(getUsersError());
       });
   };
@@ -62,10 +62,10 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       // console.log("User Data Received:", response.data);
       dispatch(getUserSuccess(response.data.data));
     } catch (error) {
-      // console.error(
-      //   " Error fetching user details:",
-      //   error.response?.data?.message || error
-      // );
+      console.error(
+        " Error fetching user details:",
+        error.response?.data?.message || error
+      );
       dispatch(getUserError());
     }
   };
@@ -89,10 +89,10 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       dispatch(verifyUserSuccess(response.data));
       // console.log(response);
     } catch (error) {
-      // console.error(
-      //   "Error during login:",
-      //   error.response?.data?.message || error
-      // );
+      console.error(
+        "Error during login:",
+        error.response?.data?.message || error
+      );
       dispatch(verifyUserError());
     }
   };
