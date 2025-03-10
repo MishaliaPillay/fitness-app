@@ -23,28 +23,29 @@ export default function Login() {
     try {
       // Register the trainer (or login if it's already registered)
       const newTrainer: ITrainer = {
-        id: "",
-        Trainername: values.username,
+        name: values.username,
         email: values.email,
         password: values.password,
+        confirmPassword: values.password,
+        role: values.role,
         contactNumber: "",
         planType: "",
+        
         activeState: false,
         trial: false,
         policiesAccepted: false,
-        role: values.role,
       };
-
-      await createTrainer([newTrainer]); // Create trainer
+      debugger;
+      await createTrainer(newTrainer); // Create trainer
 
       // Assuming your API returns the JWT token after successful registration
-      const response = await createTrainer([newTrainer]);
+      // const response = await createTrainer(newTrainer);
 
-      if (response.data.token) {
-        // Store JWT token in localStorage
-        localStorage.setItem("jwtToken", response.data.token);
-        console.log("JWT Token Stored:", response.data.token);
-      }
+      // if (response.data.token) {
+      //   // Store JWT token in localStorage
+      //   localStorage.setItem("jwtToken", response.data.token);
+      //   console.log("JWT Token Stored:", response.data.token);
+      // }
 
       // Redirect based on the role
       if (role === "trainer") {

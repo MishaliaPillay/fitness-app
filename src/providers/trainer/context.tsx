@@ -4,16 +4,16 @@ import { createContext } from "react";
 // make a Trainer object
 
 export interface ITrainer {
-  id: string;
-  Trainername: string;
+  name: string;
   email: string;
   password: string;
+  confirmPassword: string;
+  role: string;
   contactNumber: string;
   planType: string;
   activeState: boolean;
   trial: boolean;
   policiesAccepted: boolean;
-  role: string;
 }
 
 //make a shape for the context
@@ -29,11 +29,11 @@ export interface ITrainerStateContext {
 //define the actions that will be performed on Trainers
 
 export interface ITrainerActionContext {
-  getTrainers: () => any;
-  getTrainer: (id: string) => any;
-  createTrainer: (trainers: ITrainer[]) => any;
-  updateTrainer: (trainer: ITrainer) => any;
-  deleteTrainer: (id: string) => any;
+  getTrainers: () => void;
+  getTrainer: (id: string) => void;
+  createTrainer: (trainer: ITrainer) => void;
+  updateTrainer: (trainer: ITrainer) => void;
+  deleteTrainer: (id: string) => void;
 }
 
 //initial state with default  values

@@ -63,23 +63,38 @@ export const TrainerProvider = ({
       });
   };
 
-  const createTrainer = async (trainer: ITrainer[]) => {
+  // const createTrainer = async (trainer: ITrainer) => {
+  //   dispatch(createTrainerPending());
+  //   const endpoint = `/api/users/register`;
+  //   await instance
+  //     .post(endpoint, trainer)
+  //     .then((response) => {
+  //       dispatch(createTrainerSuccess(response.data.data));
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //       dispatch(createTrainerError());
+  //     });
+  // };
+  const createTrainer = async (Trainer: ITrainer) => {
     dispatch(createTrainerPending());
-    const endpoint = `/api/users/register`;
-    await instance
-      .post(endpoint, trainer)
-      .then((response) => {
-        dispatch(createTrainerSuccess(response.data));
-      })
-      .catch((error) => {
-        console.error(error);
-        dispatch(createTrainerError());
-      });
-  };
+    const endpoint="https://body-vault-server-b9ede5286d4c.herokuapp.com/api/users/register";
+    try {
+        console.log('Sending Trainer data',Trainer);
+        const response=await axios.post(endpoint,Trainer);
+        console.log('Response',response.data);
+        dispatch(createTrainerSuccess(response.data.data));
+    } catch (error) {
+        console.error("Error during signup:",error.response?.data.message ||error)
+        dispatch(createTrainerError());  
+    }
+};
+
+
 
   const updateTrainer = async (trainer: ITrainer) => {
     dispatch(updateTrainerPending());
-    const endpoint = `/Trainers/${trainer.id}`;
+    const endpoint = `/Trainers/${trainer}`;
     await instance
       .put(endpoint, trainer)
       .then((response) => {
