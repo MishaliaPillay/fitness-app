@@ -110,16 +110,6 @@ export default function Login() {
               Log in
             </Button>
           </Form.Item>
-          <p>
-            Don't have an account?
-            <Button
-              color="green"
-              variant="link"
-              onClick={() => router.push("/sign-up")}
-            >
-              Sign Up
-            </Button>
-          </p>
         </Form>
       </Card>
     </div>
