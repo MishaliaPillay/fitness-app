@@ -1,6 +1,17 @@
-"use client";
 import { useState, useEffect } from "react";
-import { Table, Dropdown, Button, Input, message, Spin, Alert } from "antd";
+import {
+  Table,
+  Dropdown,
+  Button,
+  Input,
+  message,
+  Spin,
+  Alert,
+  Modal,
+  Form,
+  Input as AntInput,
+  Select,
+} from "antd";
 import { useFoodState, useFoodActions } from "../providers/food-items/index";
 import {
   AppleOutlined,
@@ -11,6 +22,7 @@ import {
   DownOutlined,
 } from "@ant-design/icons";
 import { IFood } from "@/providers/food-items/context";
+
 // Category icons for filtering
 const categoryIcons = {
   veg: <AppleOutlined style={{ color: "green" }} />,
@@ -20,34 +32,34 @@ const categoryIcons = {
   grains: <RiseOutlined style={{ color: "orange" }} />,
 };
 
-// Food categories for filtering
 const filterCategories = ["veg", "meat", "bnl", "dairy", "grains"];
 
 const FoodItems = () => {
   const { foods, isPending, isError } = useFoodState();
-  const { getAllFood, getFoodCategory, searchFood } = useFoodActions();
+  const { getAllFood, getFoodCategory, searchFood, createFood } =
+    useFoodActions();
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [filter, setFilter] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [searchResults, setSearchResults] = useState<IFood[]>([]);
 
+  const [isModalVisible, setIsModalVisible] = useState(false); // For modal visibility
+  const [form] = Form.useForm(); // To handle form inputs
+
   useEffect(() => {
     getAllFood();
   }, []);
 
-  // Handle category filter
   const handleFilter = (category: string) => {
     setFilter(category);
     getFoodCategory(category);
   };
 
-  // Reset the filter to show all items
   const handleShowAll = () => {
     setFilter(null);
     getFoodCategory("all");
   };
 
-  // Handle row selection
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     setSelectedRowKeys(newSelectedRowKeys);
     message.info(`Selected ${newSelectedRowKeys.length} items`);
@@ -58,19 +70,16 @@ const FoodItems = () => {
     onChange: onSelectChange,
   };
 
-  // Handle the search input
   const handleSearch = () => {
     if (searchTerm.trim()) {
-      searchFood(searchTerm); // Pass the search term to the searchFood action
+      searchFood(searchTerm);
     }
   };
 
-  // Filtered food data based on selected category
   const filteredFoods = filter
     ? foods.filter((food) => food.category === filter)
     : foods;
 
-  // Dropdown menu items with filter categories and "Show All"
   const dropdownItems = [
     ...filterCategories.map((category) => ({
       key: category,
@@ -88,18 +97,13 @@ const FoodItems = () => {
     },
   ];
 
-  // Handle the search action from searchFood API and update searchResults
   const handleSearchFood = async (term: string) => {
     const results = await searchFood(term);
-    setSearchResults(results); // Update searchResults with the response
+    setSearchResults(results);
   };
 
   const columns = [
-    {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-    },
+    { title: "Name", dataIndex: "name", key: "name" },
     {
       title: "Category",
       dataIndex: "category",
@@ -110,60 +114,58 @@ const FoodItems = () => {
         </span>
       ),
     },
-    {
-      title: "Serving Size (g)",
-      dataIndex: "servingSize",
-      key: "servingSize",
-    },
-    {
-      title: "Protein (g)",
-      dataIndex: "protein",
-      key: "protein",
-    },
-    {
-      title: "Carbs (g)",
-      dataIndex: "carbs",
-      key: "carbs",
-    },
-    {
-      title: "Fat (g)",
-      dataIndex: "fat",
-      key: "fat",
-    },
-    {
-      title: "Fiber (g)",
-      dataIndex: "fiber",
-      key: "fiber",
-    },
-    {
-      title: "Sodium (mg)",
-      dataIndex: "sodium",
-      key: "sodium",
-    },
-    {
-      title: "Potassium (mg)",
-      dataIndex: "potassium",
-      key: "potassium",
-    },
-    {
-      title: "Cholesterol (mg)",
-      dataIndex: "cholesterol",
-      key: "cholesterol",
-    },
-    {
-      title: "Energy (kcal)",
-      dataIndex: "energy",
-      key: "energy",
-    },
+    { title: "Serving Size (g)", dataIndex: "servingSize", key: "servingSize" },
+    { title: "Protein (g)", dataIndex: "protein", key: "protein" },
+    { title: "Carbs (g)", dataIndex: "carbs", key: "carbs" },
+    { title: "Fat (g)", dataIndex: "fat", key: "fat" },
+    { title: "Fiber (g)", dataIndex: "fiber", key: "fiber" },
+    { title: "Sodium (mg)", dataIndex: "sodium", key: "sodium" },
+    { title: "Potassium (mg)", dataIndex: "potassium", key: "potassium" },
+    { title: "Cholesterol (mg)", dataIndex: "cholesterol", key: "cholesterol" },
+    { title: "Energy (kcal)", dataIndex: "energy", key: "energy" },
   ];
 
-  // Determine the food data to be displayed (either filtered or searched)
   const dataToDisplay =
     searchResults.length > 0 ? searchResults : filteredFoods;
+
+  const handleCreateFood = async (values: any) => {
+    // Parse numeric fields to numbers before submitting
+    const parsedValues = {
+      ...values,
+      servingSize: Number(values.servingSize),
+      protein: Number(values.protein),
+      carbs: Number(values.carbs),
+      sugar: Number(values.sugar),
+      fat: Number(values.fat),
+      fiber: Number(values.fiber),
+      sodium: Number(values.sodium),
+      potassium: Number(values.potassium),
+      cholesterol: Number(values.cholesterol),
+      energy: Number(values.energy),
+    };
+
+    try {
+      await createFood(parsedValues); // Send the parsed food item data to the API
+      message.success("Food item created successfully!");
+      setIsModalVisible(false); // Close modal on success
+      form.resetFields(); // Reset form fields
+      getAllFood(); // Refresh the table data
+    } catch (error) {
+      message.error("Failed to create food item!");
+    }
+  };
 
   return (
     <div>
       <h2>Food Items</h2>
+      {/* Create Food Item Button */}
+      <Button
+        type="primary"
+        style={{ marginBottom: 16 }}
+        onClick={() => setIsModalVisible(true)}
+      >
+        Create Food Item
+      </Button>
 
       {/* Filter Button with Dropdown */}
       <Dropdown trigger={["click"]} menu={{ items: dropdownItems }}>
@@ -210,11 +212,128 @@ const FoodItems = () => {
         <Table
           columns={columns}
           dataSource={dataToDisplay}
-          rowKey={(record) => record.id || record.name} 
+          rowKey={(record) => record.id || record.name}
           pagination={{ pageSize: 5 }}
           rowSelection={rowSelection}
         />
       )}
+
+      {/* Modal to Create Food Item */}
+      <Modal
+        title="Create Food Item"
+        open={isModalVisible} // Updated to open
+        onCancel={() => setIsModalVisible(false)}
+        footer={null}
+      >
+        <Form
+          form={form}
+          onFinish={handleCreateFood}
+          layout="vertical"
+          initialValues={{
+            category: "veg", // Default category
+          }}
+        >
+          <Form.Item
+            label="Food Name"
+            name="name"
+            rules={[{ required: true, message: "Please input food name!" }]}
+          >
+            <AntInput />
+          </Form.Item>
+          <Form.Item
+            label="Category"
+            name="category"
+            rules={[{ required: true, message: "Please select a category!" }]}
+          >
+            <Select>
+              <Select.Option value="veg">Veg</Select.Option>
+              <Select.Option value="meat">Meat</Select.Option>
+              <Select.Option value="bnl">Beverages</Select.Option>
+              <Select.Option value="dairy">Dairy</Select.Option>
+              <Select.Option value="grains">Grains</Select.Option>
+            </Select>
+          </Form.Item>
+          <Form.Item
+            label="Serving Size (g)"
+            name="servingSize"
+            rules={[{ required: true, message: "Please input serving size!" }]}
+          >
+            <AntInput type="number" />
+          </Form.Item>
+          <Form.Item
+            label="Protein (g)"
+            name="protein"
+            rules={[
+              { required: true, message: "Please input protein amount!" },
+            ]}
+          >
+            <AntInput type="number" />
+          </Form.Item>
+          <Form.Item
+            label="Carbs (g)"
+            name="carbs"
+            rules={[{ required: true, message: "Please input carbs amount!" }]}
+          >
+            <AntInput type="number" />
+          </Form.Item>
+          <Form.Item
+            label="Sugar (g)"
+            name="sugar"
+            rules={[{ required: true, message: "Please input sugar amount!" }]}
+          >
+            <AntInput type="number" />
+          </Form.Item>
+          <Form.Item
+            label="Fat (g)"
+            name="fat"
+            rules={[{ required: true, message: "Please input fat amount!" }]}
+          >
+            <AntInput type="number" />
+          </Form.Item>
+          <Form.Item
+            label="Fiber (g)"
+            name="fiber"
+            rules={[{ required: true, message: "Please input fiber amount!" }]}
+          >
+            <AntInput type="number" />
+          </Form.Item>
+          <Form.Item
+            label="Sodium (mg)"
+            name="sodium"
+            rules={[{ required: true, message: "Please input sodium amount!" }]}
+          >
+            <AntInput type="number" />
+          </Form.Item>
+          <Form.Item
+            label="Potassium (mg)"
+            name="potassium"
+            rules={[
+              { required: true, message: "Please input potassium amount!" },
+            ]}
+          >
+            <AntInput type="number" />
+          </Form.Item>
+          <Form.Item
+            label="Cholesterol (mg)"
+            name="cholesterol"
+            rules={[
+              { required: true, message: "Please input cholesterol amount!" },
+            ]}
+          >
+            <AntInput type="number" />
+          </Form.Item>
+          <Form.Item
+            label="Energy (kcal)"
+            name="energy"
+            rules={[{ required: true, message: "Please input energy value!" }]}
+          >
+            <AntInput type="number" />
+          </Form.Item>
+          <Button type="primary" htmlType="submit" style={{ width: "100%" }}>
+            Create Food Item
+          </Button>
+        </Form>
+      </Modal>
     </div>
   );
 };

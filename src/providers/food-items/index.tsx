@@ -1,6 +1,5 @@
 "use client";
-//import { getAxiosInstance } from "../../utils/axios-instance";
-
+//import { getAxiosInstance } from "../../utils/axios-instance;
 import {
   INITIAL_STATE,
   IFood,
@@ -64,7 +63,7 @@ export const FoodProvider = ({ children }: { children: React.ReactNode }) => {
     // Build the API endpoint dynamically based on the category selected
     const endpoint =
       category === "all"
-        ? "https://body-vault-server-b9ede5286d4c.herokuapp.com/api/food/category" // or use an endpoint for all categories
+        ? "https://body-vault-server-b9ede5286d4c.herokuapp.com/api/food/" // or use an endpoint for all categories
         : `https://body-vault-server-b9ede5286d4c.herokuapp.com/api/food/category/${category}`;
     console.log(endpoint);
     try {
@@ -91,18 +90,30 @@ export const FoodProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  // To serialize the data
+
   const createFood = async (Food: IFood) => {
     dispatch(createFoodPending());
+
+    const token = sessionStorage.getItem("jwt"); // Or however you retrieve your token
     const endpoint =
-      "https://body-vault-server-b9ede5286d4c.herokuapp.com/api/users/register";
+      "https://body-vault-server-b9ede5286d4c.herokuapp.com/api/food";
+
     try {
-      console.log("Sending Food data", Food);
-      const response = await axios.post(endpoint, Food);
+      // Prepare the body as x-www-form-urlencoded data
+
+      const response = await axios.post(endpoint, Food, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Authorization: `${token}`, // Attach the token for auth
+        },
+      });
+
       console.log("Response", response.data);
       dispatch(createFoodSuccess(response.data.data));
     } catch (error) {
       console.error(
-        "Error during signup:",
+        "Error during creating food item:",
         error.response?.data.message || error
       );
       dispatch(createFoodError());
