@@ -77,7 +77,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       console.log("getting User data", user);
       const response = await axios.post<ILoginResponse>(endpoint, user);
-      console.log("Response", response.data);
+     // console.log("Response", response.data);
       const token = response.data.data.token;
       if (token) {
         console.log("session This where token stored");
