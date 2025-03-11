@@ -210,7 +210,7 @@ const FoodItems = () => {
         <Table
           columns={columns}
           dataSource={dataToDisplay}
-          rowKey="id" // Ensure each row has a unique "id" key
+          rowKey={(record) => record.id || record.name} 
           pagination={{ pageSize: 5 }}
           rowSelection={rowSelection}
         />
