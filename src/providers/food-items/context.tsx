@@ -33,9 +33,9 @@ export interface IFoodStateContext {
 
 export interface IFoodActionContext {
   getAllFood: () => void;
-  getFoodCategory: () => void;
+  getFoodCategory: (category: string) => void;
   createFood: (food: IFood) => void;
-  searchFood: (food: IFood) => void;
+  searchFood: (name: string) => Promise<IFood[]>;
 }
 
 //initial state with default  values
