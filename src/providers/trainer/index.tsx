@@ -70,7 +70,7 @@ export const TrainerProvider = ({
     try {
       console.log("Sending Trainer data", Trainer);
       const response = await axios.post(endpoint, Trainer);
-      console.log("Response", response.data);
+     // console.log("Response", response.data);
       dispatch(createTrainerSuccess(response.data.data));
     } catch (error) {
       console.error(

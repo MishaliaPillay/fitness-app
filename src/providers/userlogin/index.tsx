@@ -59,7 +59,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         },
       });
 
-      console.log("User Data Received:", response.data);
+    // console.log("User Data Received:", response.data);
       dispatch(getUserSuccess(response.data.data));
     } catch (error) {
       console.error(
