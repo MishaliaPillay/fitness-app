@@ -58,10 +58,15 @@ export const FoodProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const getFoodCategory = async () => {
+  const getFoodCategory = async (category: string) => {
     dispatch(getFoodCategoryPending());
+
+    // Build the API endpoint dynamically based on the category selected
     const endpoint =
-      "https://body-vault-server-b9ede5286d4c.herokuapp.com/api/food/category/veg";
+      category === "all"
+        ? "https://body-vault-server-b9ede5286d4c.herokuapp.com/api/food/category" // or use an endpoint for all categories
+        : `https://body-vault-server-b9ede5286d4c.herokuapp.com/api/food/category/${category}`;
+    console.log(endpoint);
     try {
       const token = sessionStorage.getItem("jwt")?.trim();
 
@@ -75,12 +80,11 @@ export const FoodProvider = ({ children }: { children: React.ReactNode }) => {
           Authorization: `${token}`,
         },
       });
-      // console.log(response.data.data);
-      // console.log("User Data Received:", response.data);
+
       dispatch(getFoodCategorySuccess(response.data.data));
     } catch (error) {
       console.error(
-        " Error fetching user details:",
+        "Error fetching food category details:",
         error.response?.data?.message || error
       );
       dispatch(getFoodCategoryError());
@@ -106,13 +110,13 @@ export const FoodProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const searchFood = async () => {
+  const searchFood = async (term: string) => {
     dispatch(searchFoodPending());
-    const endpoint =
-      "https://body-vault-server-b9ede5286d4c.herokuapp.com/api/food/search/milk";
-    try {
-      const token = sessionStorage.getItem("jwt")?.trim();
+    const endpoint = `https://body-vault-server-b9ede5286d4c.herokuapp.com/api/food/search/${term}`;
 
+    try {
+      console.log(endpoint);
+      const token = sessionStorage.getItem("jwt")?.trim();
       if (!token) {
         dispatch(searchFoodError());
         return;
@@ -123,15 +127,16 @@ export const FoodProvider = ({ children }: { children: React.ReactNode }) => {
           Authorization: `${token}`,
         },
       });
-      // console.log(response.data.data);
-      // console.log("User Data Received:", response.data);
+
       dispatch(searchFoodSuccess(response.data.data));
+      return response.data.data;
     } catch (error) {
       console.error(
-        " Error fetching user details:",
+        "Error fetching food details:",
         error.response?.data?.message || error
       );
       dispatch(searchFoodError());
+      return [];
     }
   };
 
