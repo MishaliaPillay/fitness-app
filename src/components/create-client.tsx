@@ -14,16 +14,11 @@ import {
 import { UserOutlined, MailOutlined, PhoneOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { useClientActions } from "../providers/client/index";
-//import dayjs from "dayjs";
+import dayjs from "dayjs";
 import { useEffect } from "react";
 import { IClient } from "@/providers/client/context";
 import { useUserState, useUserActions } from "../providers/userlogin/index";
 const { Title } = Typography;
-
-const trainers = [
-  { id: "trainer1", name: "Trainer 1" },
-  { id: "trainer2", name: "Trainer 2" },
-];
 
 export default function ClientForm() {
   const [form] = Form.useForm();
@@ -45,7 +40,9 @@ export default function ClientForm() {
       email: values.email,
       contactNumber: values.contactNumber,
       sex: values.sex,
-      dateOfBirth: "",
+      dateOfBirth: values.dateOfBirth
+        ? dayjs(values.dateOfBirth).format("YYYY-MM-DD")
+        : "",
       activeState: true,
       trainerId: user.id,
     };
@@ -86,7 +83,7 @@ export default function ClientForm() {
           >
             {/* Full Name */}
             <Form.Item
-              name="fullname"
+              name="fullName"
               label="Full Name"
               rules={[{ required: true, message: "Please enter full name" }]}
             >
@@ -168,19 +165,6 @@ export default function ClientForm() {
             </Form.Item>
 
             {/* Trainer */}
-            <Form.Item
-              name="trainerId"
-              label="Trainer"
-              rules={[{ required: true, message: "Please select trainer" }]}
-            >
-              <Select placeholder="Select trainer" size="large">
-                {trainers.map((trainer) => (
-                  <Select.Option key={trainer.id} value={trainer.id}>
-                    {trainer.name}
-                  </Select.Option>
-                ))}
-              </Select>
-            </Form.Item>
 
             {/* Submit Button */}
             <Form.Item>

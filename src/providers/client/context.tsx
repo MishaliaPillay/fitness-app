@@ -7,10 +7,10 @@ export interface IClient {
   fullName: string;
   email: string;
   contactNumber: string;
-  sex?: string;
-  dateOfBirth?: string;
+  sex: string;
+  dateOfBirth: string;
   activeState?: boolean;
-  trainerId?: string;
+  trainerId: string;
 }
 
 //make a shape for the context
@@ -29,7 +29,7 @@ export interface IClientActionContext {
   getClients: () => void;
   getClient: () => void;
   createClient: (client: IClient) => void;
-  signClientIn: (client: IClient) => void;
+  registerClient: (client: IClient) => void;
 }
 
 //initial state with default  values

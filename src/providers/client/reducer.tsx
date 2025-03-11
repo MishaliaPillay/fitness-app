@@ -44,15 +44,15 @@ export const ClientReducer = handleActions<
       ...state,
       ...action.payload,
     }),
-    [ClientActionEnums.signClientInPending]: (state, action) => ({
+    [ClientActionEnums.registerClientPending]: (state, action) => ({
       ...state,
       ...action.payload,
     }),
-    [ClientActionEnums.signClientInSuccess]: (state, action) => ({
+    [ClientActionEnums.registerClientSuccess]: (state, action) => ({
       ...state,
       ...action.payload,
     }),
-    [ClientActionEnums.signClientInError]: (state, action) => ({
+    [ClientActionEnums.registerClientError]: (state, action) => ({
       ...state,
       ...action.payload,
     }),

@@ -18,10 +18,10 @@ import {
   getClientSuccess,
   createClientPending,
   createClientError,
-  signClientInSuccess,
+  registerClientSuccess,
   createClientSuccess,
-  signClientInPending,
-  signClientInError,
+  registerClientPending,
+  registerClientError,
 } from "./actions";
 import axios from "axios";
 
@@ -65,16 +65,18 @@ export const ClientProvider = ({ children }: { children: React.ReactNode }) => {
       dispatch(createClientError());
       return;
     }
-    
+
     const endpoint =
       "https://body-vault-server-b9ede5286d4c.herokuapp.com/api/client";
 
     try {
+      console.log(client);
       const response = await axios.post(endpoint, client, {
         headers: {
           Authorization: `${token}`,
         },
       });
+      console.log("somethingnot");
       console.log("Sending Trainer data", client);
       dispatch(createClientSuccess(response.data.data));
     } catch (error) {
@@ -86,18 +88,24 @@ export const ClientProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const signClientIn = async (Client: IClient) => {
-    dispatch(signClientInPending());
-    const endpoint = `/Clients/${Client}`;
-    await instance
-      .put(endpoint, Client)
-      .then((response) => {
-        dispatch(signClientInSuccess(response.data));
-      })
-      .catch((error) => {
-        console.error(error);
-        dispatch(signClientInError());
-      });
+  const registerClient = async (client: IClient) => {
+    dispatch(registerClientPending());
+    const endpoint =
+      "https://body-vault-server-b9ede5286d4c.herokuapp.com/api/users/register/mobile";
+
+    try {
+      console.log("Sending Trainer data", client);
+      const response = await axios.post(endpoint, client);
+      console.log("Response", response.data);
+      dispatch(registerClientSuccess(response.data.data));
+    } catch (error) {
+      console.error(
+        "Error during signup:",
+        error.response?.data.message || error
+      );
+      dispatch(registerClientError());
+      throw error;
+    }
   };
 
   return (
@@ -107,7 +115,7 @@ export const ClientProvider = ({ children }: { children: React.ReactNode }) => {
           getClients,
           getClient,
           createClient,
-          signClientIn,
+          registerClient,
         }}
       >
         {children}

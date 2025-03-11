@@ -18,9 +18,9 @@ export enum ClientActionEnums {
   createClientSuccess = "CREATE_Client_SUCCESS",
   createClientError = "CREATE_Client_ERROR",
 
-  signClientInPending = "UPDATE_Client_PENDING",
-  signClientInSuccess = "UPDATE_Client_SUCCESS",
-  signClientInError = "UPDATE_Client_ERROR",
+  registerClientPending = "UPDATE_Client_PENDING",
+  registerClientSuccess = "UPDATE_Client_SUCCESS",
+  registerClientError = "UPDATE_Client_ERROR",
 }
 
 // createAction<PayloadType>(actionType, payloadCreator)
@@ -90,13 +90,13 @@ export const createClientError = createAction<IClientStateContext>(
   () => ({ isPending: false, isSuccess: false, isError: true })
 );
 
-export const signClientInPending = createAction<IClientStateContext>(
-  ClientActionEnums.signClientInPending,
+export const registerClientPending = createAction<IClientStateContext>(
+  ClientActionEnums.registerClientPending,
   () => ({ isPending: true, isSuccess: false, isError: false })
 );
 
-export const signClientInSuccess = createAction<IClientStateContext, IClient>(
-  ClientActionEnums.signClientInSuccess,
+export const registerClientSuccess = createAction<IClientStateContext, IClient>(
+  ClientActionEnums.registerClientSuccess,
   (client: IClient) => ({
     isPending: false,
     isSuccess: true,
@@ -105,7 +105,7 @@ export const signClientInSuccess = createAction<IClientStateContext, IClient>(
   })
 );
 
-export const signClientInError = createAction<IClientStateContext>(
-  ClientActionEnums.signClientInError,
+export const registerClientError = createAction<IClientStateContext>(
+  ClientActionEnums.registerClientError,
   () => ({ isPending: false, isSuccess: false, isError: true })
 );
