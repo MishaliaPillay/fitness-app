@@ -5,10 +5,11 @@ import { useFoodState, useFoodActions } from "../providers/food-items/index";
 
 const FoodItems = () => {
   const { food, isPending, isError } = useFoodState();
-  const { getAllFood } = useFoodActions();
+  const { getAllFood, getFoodCategory } = useFoodActions();
 
   useEffect(() => {
     getAllFood();
+    getFoodCategory();
   }, []);
 
   if (isPending) return <p style={{ color: "red" }}>Loading food details...</p>;

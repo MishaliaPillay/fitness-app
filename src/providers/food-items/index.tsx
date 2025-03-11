@@ -40,13 +40,13 @@ export const FoodProvider = ({ children }: { children: React.ReactNode }) => {
         dispatch(getAllFoodError());
         return;
       }
-      console.log("passed");
+
       const response = await axios.get(endpoint, {
         headers: {
           Authorization: `${token}`,
         },
       });
-console.log(response.data)
+
       // console.log("User Data Received:", response.data);
       dispatch(getAllFoodSuccess(response.data.data));
     } catch (error) {
@@ -60,16 +60,31 @@ console.log(response.data)
 
   const getFoodCategory = async () => {
     dispatch(getFoodCategoryPending());
-    const endpoint = `/Foods/`;
-    await instance
-      .get(endpoint)
-      .then((response) => {
-        dispatch(getFoodCategorySuccess(response.data));
-      })
-      .catch((error) => {
-        console.error(error);
+    const endpoint =
+      "https://body-vault-server-b9ede5286d4c.herokuapp.com/api/food/category/veg";
+    try {
+      const token = sessionStorage.getItem("jwt")?.trim();
+
+      if (!token) {
         dispatch(getFoodCategoryError());
+        return;
+      }
+
+      const response = await axios.get(endpoint, {
+        headers: {
+          Authorization: `${token}`,
+        },
       });
+     // console.log(response.data.data);
+      // console.log("User Data Received:", response.data);
+      dispatch(getFoodCategorySuccess(response.data.data));
+    } catch (error) {
+      console.error(
+        " Error fetching user details:",
+        error.response?.data?.message || error
+      );
+      dispatch(getFoodCategoryError());
+    }
   };
 
   const createFood = async (Food: IFood) => {
