@@ -128,7 +128,7 @@ const FoodItems = () => {
   const dataToDisplay =
     searchResults.length > 0 ? searchResults : filteredFoods;
 
-  const handleCreateFood = async (values: any) => {
+  const handleCreateFood = async (values: IFood) => {
     // Parse numeric fields to numbers before submitting
     const parsedValues = {
       ...values,
@@ -151,7 +151,7 @@ const FoodItems = () => {
       form.resetFields(); // Reset form fields
       getAllFood(); // Refresh the table data
     } catch (error) {
-      message.error("Failed to create food item!");
+      message.error("Failed to create food item!", error);
     }
   };
 
