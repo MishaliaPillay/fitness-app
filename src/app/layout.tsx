@@ -6,6 +6,8 @@ import { TrainerProvider } from "@/providers/trainer";
 import { UserProvider } from "@/providers/userlogin";
 import { ClientProvider } from "@/providers/client";
 
+import { FoodProvider } from "@/providers/food-items";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -61,11 +63,13 @@ export default function RootLayout({
       <TrainerProvider>
         <ClientProvider>
           <UserProvider>
-            <html lang="en">
-              <body className={`${geistSans.variable} ${geistMono.variable}`}>
-                {children}
-              </body>
-            </html>
+            <FoodProvider>
+              <html lang="en">
+                <body className={`${geistSans.variable} ${geistMono.variable}`}>
+                  {children}
+                </body>
+              </html>
+            </FoodProvider>
           </UserProvider>
         </ClientProvider>
       </TrainerProvider>
