@@ -7,8 +7,8 @@ export interface IClient {
   fullName: string;
   email: string;
   contactNumber: string;
-  sex: string;
-  dateOfBirth: string;
+  sex?: string;
+  dateOfBirth?: string;
   activeState?: boolean;
   trainerId?: string;
 }

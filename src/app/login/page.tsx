@@ -5,19 +5,21 @@ import { useRouter } from "next/navigation";
 import { LoginForm } from "@/interfaces/roles";
 import { IUser } from "@/providers/userlogin/context";
 import { useUserActions } from "@/providers/userlogin";
+import React, { useState } from "react";
+import { message } from "antd";
 
 const { Title } = Typography;
 
 export default function Login() {
+  const [messageApi, contextHolder] = message.useMessage();
   const [form] = Form.useForm();
   const router = useRouter();
   const { verifyUser } = useUserActions();
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async (values: LoginForm) => {
     const { email, password, role } = values;
-
-    const user = { email, password, role };
-    localStorage.setItem("currentUser", JSON.stringify(user));
+    setLoading(true);
 
     try {
       const signedUser: IUser = {
@@ -25,84 +27,122 @@ export default function Login() {
         password: values.password,
       };
 
-      verifyUser(signedUser);
+      let loginSuccess = false;
 
-      if (role === "trainer") {
-        router.push("/trainer");
-      } else if (role === "client") {
-        router.push("/client");
-      } else {
-        // Handle invalid role
-        router.push("/login");
+      try {
+        verifyUser(signedUser);
+        messageApi.success("Login successful");
+        loginSuccess = true;
+      } catch (error) {
+        messageApi.error("Login failed. Please check your credentials.");
+        console.error("Verification failed:", error);
+        loginSuccess = false;
+        setLoading(false);
+        return;
+      }
+
+      if (loginSuccess) {
+        const user = { email, password, role };
+        localStorage.setItem("currentUser", JSON.stringify(user));
+
+        setTimeout(() => {
+          if (role === "trainer") {
+            router.push("/trainer");
+          } else if (role === "client") {
+            router.push("/client");
+          } else {
+            messageApi.warning("Invalid role selected");
+            router.push("/login");
+          }
+        }, 1000);
       }
     } catch (error) {
-     console.error("Failed to create user:", error);
+      console.error("Failed to process login:", error);
+      messageApi.error("An unexpected error occurred");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        minHeight: "100vh",
-        background: "#f0f2f5",
-      }}
-    >
-      <Card style={{ width: 400, padding: "24px" }}>
-        <Title level={2} style={{ textAlign: "center", marginBottom: 32 }}>
-          Login
-        </Title>
-        <Form form={form} name="login" onFinish={handleLogin} layout="vertical">
-          <Form.Item
-            name="email"
-            rules={[
-              { required: true, message: "Please input your email!" },
-              { type: "email", message: "Please input a valid email!" },
-            ]}
+    <>
+      {contextHolder}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "100vh",
+          background: "#f0f2f5",
+        }}
+      >
+        <Card style={{ width: 400, padding: "24px" }}>
+          <Title level={2} style={{ textAlign: "center", marginBottom: 32 }}>
+            Login
+          </Title>
+          <Form
+            form={form}
+            name="login"
+            onFinish={handleLogin}
+            layout="vertical"
           >
-            <Input prefix={<MailOutlined />} placeholder="Email" size="large" />
-          </Form.Item>
-
-          <Form.Item
-            name="password"
-            rules={[{ required: true, message: "Please input your password!" }]}
-          >
-            <Input.Password
-              prefix={<LockOutlined />}
-              placeholder="Password"
-              size="large"
-            />
-          </Form.Item>
-
-          <Form.Item
-            name="role"
-            rules={[{ required: true, message: "Please select your role!" }]}
-          >
-            <Select placeholder="Select your role" size="large">
-              <Select.Option value="trainer">Trainer</Select.Option>
-              <Select.Option value="client">Client</Select.Option>
-            </Select>
-          </Form.Item>
-
-          <Form.Item>
-            <Button type="primary" htmlType="submit" size="large" block>
-              Log in
-            </Button>
-          </Form.Item>
-          <p>
-            Don&apos;t have an account?
-            <Button
-              color="green"
-              variant="link"
-              onClick={() => router.push("/sign-up")}
+            <Form.Item
+              name="email"
+              rules={[
+                { required: true, message: "Please input your email!" },
+                { type: "email", message: "Please input a valid email!" },
+              ]}
             >
-              Sign Up
-            </Button>
-          </p>
-        </Form>
-      </Card>
-    </div>
+              <Input
+                prefix={<MailOutlined />}
+                placeholder="Email"
+                size="large"
+              />
+            </Form.Item>
+
+            <Form.Item
+              name="password"
+              rules={[
+                { required: true, message: "Please input your password!" },
+              ]}
+            >
+              <Input.Password
+                prefix={<LockOutlined />}
+                placeholder="Password"
+                size="large"
+              />
+            </Form.Item>
+
+            <Form.Item
+              name="role"
+              rules={[{ required: true, message: "Please select your role!" }]}
+            >
+              <Select placeholder="Select your role" size="large">
+                <Select.Option value="trainer">Trainer</Select.Option>
+                <Select.Option value="client">Client</Select.Option>
+              </Select>
+            </Form.Item>
+
+            <Form.Item>
+              <Button
+                type="primary"
+                htmlType="submit"
+                size="large"
+                block
+                loading={loading}
+              >
+                Log in
+              </Button>
+            </Form.Item>
+            <p style={{ textAlign: "center" }}>
+              Don&apos;t have an account?{" "}
+              <Button type="link" onClick={() => router.push("/sign-up")}>
+                Sign Up
+              </Button>
+            </p>
+          </Form>
+        </Card>
+      </div>
+    </>
   );
 }

@@ -55,7 +55,7 @@ const ProtectedTrainerLayout = withAuth(
             }}
           >
             <h2 style={{ margin: 0 }}>Trainer Dashboard</h2>
-            <UserProfile /> {/* User Profile in the Header */}
+           
           </Header>
           <Content style={{ padding: "0 50px", marginTop: 16 }}>
             <Breadcrumb
@@ -114,7 +114,7 @@ const ProtectedTrainerLayout = withAuth(
               {/* Create Client Form Display */}
               <CreateClientForm />
             </div>
-          </Content>
+          </Content> <UserProfile />
         </Layout>
       </Layout>
     );

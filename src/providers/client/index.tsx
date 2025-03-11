@@ -59,29 +59,26 @@ export const ClientProvider = ({ children }: { children: React.ReactNode }) => {
   const createClient = async (client: IClient) => {
     dispatch(createClientPending());
 
-    // Retrieve JWT token from sessionStorage inside createClient
-    const token = sessionStorage.getItem("jwtToken");
+    const token = sessionStorage.getItem("jwt");
 
     if (!token) {
-     // console.error("No JWT token found in sessionStorage");
       dispatch(createClientError());
       return;
     }
-
+    
     const endpoint =
       "https://body-vault-server-b9ede5286d4c.herokuapp.com/api/client";
 
     try {
-     // console.log("Sending Client data", client);
       const response = await axios.post(endpoint, client, {
         headers: {
-          Authorization: `${token}`, // Send token in the Authorization header
+          Authorization: `${token}`,
         },
       });
-    //  console.log("Response", response.data);
+      console.log("Sending Trainer data", client);
       dispatch(createClientSuccess(response.data.data));
     } catch (error) {
-     console.error(
+      console.error(
         "Error during signup:",
         error.response?.data.message || error
       );

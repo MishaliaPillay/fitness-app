@@ -29,6 +29,9 @@ const UserProfile = () => {
         <li>
           <strong>Email:</strong> {user.email}
         </li>
+        <li>
+          <strong>id:</strong> {user.id}
+        </li>
       </ul>
     </div>
   );

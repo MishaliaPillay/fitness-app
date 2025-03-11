@@ -1,147 +1,202 @@
 "use client";
 
-import { Form, Input, Select, DatePicker, Button, Switch } from "antd";
-import type { FormProps } from "antd";
+import {
+  Form,
+  Input,
+  Select,
+  DatePicker,
+  Button,
+  Switch,
+  Typography,
+  Card,
+  message,
+} from "antd";
+import { UserOutlined, MailOutlined, PhoneOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { useClientActions } from "../providers/client/index";
-
-interface ClientFormValues {
-  fullname: string;
-  email: string;
-  contactNumber: string;
-  sex: string;
-  dateOfBirth: string;
-  activeState: boolean;
-  trainerId: string;
-}
+//import dayjs from "dayjs";
+import { useEffect } from "react";
+import { IClient } from "@/providers/client/context";
+import { useUserState, useUserActions } from "../providers/userlogin/index";
+const { Title } = Typography;
 
 const trainers = [
   { id: "trainer1", name: "Trainer 1" },
   { id: "trainer2", name: "Trainer 2" },
 ];
 
-const ClientForm = () => {
+export default function ClientForm() {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
-  const { createClient } = useClientActions(); // Access createClient action from context
+  const { createClient } = useClientActions();
+  const [messageApi, contextHolder] = message.useMessage();
 
-  const onFinish: FormProps<ClientFormValues>["onFinish"] = async (values) => {
+  const { user } = useUserState();
+  const { getUser } = useUserActions();
+
+  useEffect(() => {
+    getUser();
+  }, []);
+  const onFinish = async (values: IClient) => {
     setLoading(true);
 
-    // Map the form values to match the IClient interface
-    const clientData = {
-      fullName: values.fullname, // map 'fullname' to 'fullName'
+    const clientData: IClient = {
+      fullName: values.fullName,
       email: values.email,
       contactNumber: values.contactNumber,
       sex: values.sex,
-      dateOfBirth: values.dateOfBirth,
-      activeState: values.activeState,
-      trainerId: values.trainerId,
+      dateOfBirth: "",
+      activeState: true,
+      trainerId: user.id,
     };
 
-    console.log(" Submitted Values:", clientData);
-
-    // Call createClient with the data
     try {
-      await createClient(clientData);
-      setLoading(false);
-      console.log(" Client created successfully!");
+      createClient(clientData);
+      messageApi.success("Client created successfully!");
+      // form.resetFields();
     } catch (error) {
+      messageApi.error("Error creating client. Please try again.");
+      console.error("Error:", error);
+    } finally {
       setLoading(false);
-      console.error("Error creating client:", error);
     }
   };
 
   return (
-    <Form
-      form={form}
-      layout="vertical"
-      onFinish={onFinish}
-      initialValues={{
-        activeState: true,
-      }}
-    >
-      {/* Full Name */}
-      <Form.Item
-        label="Full Name"
-        name="fullname"
-        rules={[{ required: true, message: "Please enter full name" }]}
+    <>
+      {contextHolder}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "100vh",
+          background: "#f0f2f5",
+        }}
       >
-        <Input placeholder="Enter full name" />
-      </Form.Item>
+        <Card style={{ width: 400, padding: "24px" }}>
+          <Title level={2} style={{ textAlign: "center", marginBottom: 32 }}>
+            Register Client
+          </Title>
+          <Form
+            form={form}
+            layout="vertical"
+            onFinish={onFinish}
+            initialValues={{ activeState: true }}
+          >
+            {/* Full Name */}
+            <Form.Item
+              name="fullname"
+              label="Full Name"
+              rules={[{ required: true, message: "Please enter full name" }]}
+            >
+              <Input
+                prefix={<UserOutlined />}
+                placeholder="Enter full name"
+                size="large"
+              />
+            </Form.Item>
 
-      {/* Email */}
-      <Form.Item
-        label="Email"
-        name="email"
-        rules={[
-          { required: true, message: "Please enter email", type: "email" },
-        ]}
-      >
-        <Input placeholder="Enter email" />
-      </Form.Item>
+            {/* Email */}
+            <Form.Item
+              name="email"
+              label="Email"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter email",
+                  type: "email",
+                },
+              ]}
+            >
+              <Input
+                prefix={<MailOutlined />}
+                placeholder="Enter email"
+                size="large"
+              />
+            </Form.Item>
 
-      {/* Contact Number */}
-      <Form.Item
-        label="Contact Number"
-        name="contactNumber"
-        rules={[{ required: true, message: "Please enter contact number" }]}
-      >
-        <Input placeholder="Enter contact number" />
-      </Form.Item>
+            {/* Contact Number */}
+            <Form.Item
+              name="contactNumber"
+              label="Contact Number"
+              rules={[
+                { required: true, message: "Please enter contact number" },
+              ]}
+            >
+              <Input
+                prefix={<PhoneOutlined />}
+                placeholder="Enter contact number"
+                size="large"
+              />
+            </Form.Item>
 
-      {/* Sex */}
-      <Form.Item
-        label="Sex"
-        name="sex"
-        rules={[{ required: true, message: "Please select gender" }]}
-      >
-        <Select placeholder="Select gender">
-          <Select.Option value="male">Male</Select.Option>
-          <Select.Option value="female">Female</Select.Option>
-          <Select.Option value="other">Other</Select.Option>
-        </Select>
-      </Form.Item>
+            {/* Sex */}
+            <Form.Item
+              name="sex"
+              label="Sex"
+              rules={[{ required: true, message: "Please select gender" }]}
+            >
+              <Select placeholder="Select gender" size="large">
+                <Select.Option value="male">Male</Select.Option>
+                <Select.Option value="female">Female</Select.Option>
+              </Select>
+            </Form.Item>
 
-      {/* Date of Birth */}
-      <Form.Item
-        label="Date of Birth"
-        name="dateOfBirth"
-        rules={[{ required: true, message: "Please select date of birth" }]}
-      >
-        <DatePicker format="YYYY-MM-DD" />
-      </Form.Item>
+            {/* Date of Birth */}
+            <Form.Item
+              name="dateOfBirth"
+              label="Date of Birth"
+              rules={[
+                { required: true, message: "Please select date of birth" },
+              ]}
+            >
+              <DatePicker
+                format="YYYY-MM-DD"
+                size="large"
+                style={{ width: "100%" }}
+              />
+            </Form.Item>
 
-      {/* Active State */}
-      <Form.Item
-        label="Active State"
-        name="activeState"
-        valuePropName="checked"
-      >
-        <Switch checkedChildren="Active" unCheckedChildren="Inactive" />
-      </Form.Item>
+            {/* Active State */}
+            <Form.Item
+              name="activeState"
+              label="Active State"
+              valuePropName="checked"
+            >
+              <Switch checkedChildren="Active" unCheckedChildren="Inactive" />
+            </Form.Item>
 
-      <Form.Item
-        label="Trainer"
-        name="trainerId"
-        rules={[{ required: true, message: "Please select trainer" }]}
-      >
-        <Select placeholder="Select trainer">
-          {trainers.map((trainer) => (
-            <Select.Option key={trainer.id} value={trainer.id}>
-              {trainer.name}
-            </Select.Option>
-          ))}
-        </Select>
-      </Form.Item>
+            {/* Trainer */}
+            <Form.Item
+              name="trainerId"
+              label="Trainer"
+              rules={[{ required: true, message: "Please select trainer" }]}
+            >
+              <Select placeholder="Select trainer" size="large">
+                {trainers.map((trainer) => (
+                  <Select.Option key={trainer.id} value={trainer.id}>
+                    {trainer.name}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Form.Item>
 
-      <Form.Item>
-        <Button type="primary" htmlType="submit" loading={loading}>
-          Submit
-        </Button>
-      </Form.Item>
-    </Form>
+            {/* Submit Button */}
+            <Form.Item>
+              <Button
+                type="primary"
+                htmlType="submit"
+                size="large"
+                block
+                loading={loading}
+              >
+                Register Client
+              </Button>
+            </Form.Item>
+          </Form>
+        </Card>
+      </div>
+    </>
   );
-};
-
-export default ClientForm;
+}
