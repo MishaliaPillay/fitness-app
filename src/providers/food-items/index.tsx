@@ -1,5 +1,5 @@
 "use client";
-import { getAxiosInstance } from "../../utils/axios-instance";
+//import { getAxiosInstance } from "../../utils/axios-instance";
 
 import {
   INITIAL_STATE,
@@ -27,7 +27,7 @@ import axios from "axios";
 
 export const FoodProvider = ({ children }: { children: React.ReactNode }) => {
   const [state, dispatch] = useReducer(FoodReducer, INITIAL_STATE);
-  const instance = getAxiosInstance();
+  // const instance = getAxiosInstance();
 
   const getAllFood = async () => {
     dispatch(getAllFoodPending());
@@ -75,7 +75,7 @@ export const FoodProvider = ({ children }: { children: React.ReactNode }) => {
           Authorization: `${token}`,
         },
       });
-     // console.log(response.data.data);
+      // console.log(response.data.data);
       // console.log("User Data Received:", response.data);
       dispatch(getFoodCategorySuccess(response.data.data));
     } catch (error) {
@@ -106,18 +106,33 @@ export const FoodProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const searchFood = async (Food: IFood) => {
+  const searchFood = async () => {
     dispatch(searchFoodPending());
-    const endpoint = `/Foods/${Food}`;
-    await instance
-      .put(endpoint, Food)
-      .then((response) => {
-        dispatch(searchFoodSuccess(response.data));
-      })
-      .catch((error) => {
-        console.error(error);
+    const endpoint =
+      "https://body-vault-server-b9ede5286d4c.herokuapp.com/api/food/search/milk";
+    try {
+      const token = sessionStorage.getItem("jwt")?.trim();
+
+      if (!token) {
         dispatch(searchFoodError());
+        return;
+      }
+
+      const response = await axios.get(endpoint, {
+        headers: {
+          Authorization: `${token}`,
+        },
       });
+      // console.log(response.data.data);
+      // console.log("User Data Received:", response.data);
+      dispatch(searchFoodSuccess(response.data.data));
+    } catch (error) {
+      console.error(
+        " Error fetching user details:",
+        error.response?.data?.message || error
+      );
+      dispatch(searchFoodError());
+    }
   };
 
   return (
