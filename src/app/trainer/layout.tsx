@@ -17,6 +17,7 @@ import withAuth from "@/hoc/with-auth";
 import UserProfile from "@/components/user-profile";
 import CreateClientForm from "@/components/create-client"; // Import Create Client Form
 import FoodItems from "@/components/food-items";
+import ClientList from "@/components/client-list";
 
 const { Header, Content, Sider } = Layout;
 
@@ -56,7 +57,6 @@ const ProtectedTrainerLayout = withAuth(
             }}
           >
             <h2 style={{ margin: 0 }}>Trainer Dashboard</h2>
-           
           </Header>
           <Content style={{ padding: "0 50px", marginTop: 16 }}>
             <Breadcrumb
@@ -115,8 +115,9 @@ const ProtectedTrainerLayout = withAuth(
               {/* Create Client Form Display */}
               <CreateClientForm />
             </div>
-          </Content> <UserProfile />
-          <FoodItems/>
+          </Content>
+          <ClientList /> <UserProfile />
+          <FoodItems />
         </Layout>
       </Layout>
     );

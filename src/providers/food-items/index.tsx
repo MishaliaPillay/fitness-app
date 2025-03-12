@@ -26,7 +26,6 @@ import axios from "axios";
 
 export const FoodProvider = ({ children }: { children: React.ReactNode }) => {
   const [state, dispatch] = useReducer(FoodReducer, INITIAL_STATE);
-  // const instance = getAxiosInstance();
 
   const getAllFood = async () => {
     dispatch(getAllFoodPending());
@@ -46,7 +45,6 @@ export const FoodProvider = ({ children }: { children: React.ReactNode }) => {
         },
       });
 
-      // console.log("User Data Received:", response.data);
       dispatch(getAllFoodSuccess(response.data.data));
     } catch (error) {
       console.error(
@@ -60,10 +58,9 @@ export const FoodProvider = ({ children }: { children: React.ReactNode }) => {
   const getFoodCategory = async (category: string) => {
     dispatch(getFoodCategoryPending());
 
-    // Build the API endpoint dynamically based on the category selected
     const endpoint =
       category === "all"
-        ? "https://body-vault-server-b9ede5286d4c.herokuapp.com/api/food/" // or use an endpoint for all categories
+        ? "https://body-vault-server-b9ede5286d4c.herokuapp.com/api/food/"
         : `https://body-vault-server-b9ede5286d4c.herokuapp.com/api/food/category/${category}`;
     console.log(endpoint);
     try {
@@ -90,22 +87,18 @@ export const FoodProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  // To serialize the data
-
   const createFood = async (Food: IFood) => {
     dispatch(createFoodPending());
 
-    const token = sessionStorage.getItem("jwt"); // Or however you retrieve your token
+    const token = sessionStorage.getItem("jwt");
     const endpoint =
       "https://body-vault-server-b9ede5286d4c.herokuapp.com/api/food";
 
     try {
-      // Prepare the body as x-www-form-urlencoded data
-
       const response = await axios.post(endpoint, Food, {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
-          Authorization: `${token}`, // Attach the token for auth
+          Authorization: `${token}`,
         },
       });
 
