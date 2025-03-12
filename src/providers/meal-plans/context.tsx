@@ -56,7 +56,7 @@ export interface IMealPlanActionContext {
   getMealPlanClient: () => void;
   getMealPlanTrainer: (mealPlan: IMealPlan) => void;
   createMealPlan: (mealPlan: IMealPlan) => void;
-  getMealPlan: (mealPlan: IMealPlan) => void;
+  getMealPlan: () => void;
 }
 
 //initial state with default  values

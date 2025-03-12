@@ -25,17 +25,14 @@ import {
 } from "./actions";
 import axios from "axios";
 
-export const TrainerProvider = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
+export const MealProvider = ({ children }: { children: React.ReactNode }) => {
   const [state, dispatch] = useReducer(MealReducer, INITIAL_STATE);
   const instance = getAxiosInstance();
 
   const getMealPlan = async () => {
     dispatch(getMealPlanPending());
-    const endpoint = `https://body-vault-server-b9ede5286d4c.herokuapp.com/api/client/trainer/$/clients`;
+    const endpoint =
+      "https://body-vault-server-b9ede5286d4c.herokuapp.com/api/mealplan/601818097d1810001c5ea2dd";
 
     try {
       const token = sessionStorage.getItem("jwt")?.trim();
@@ -124,18 +121,18 @@ export const TrainerProvider = ({
   );
 };
 
-export const useTrainerState = () => {
+export const useMealState = () => {
   const context = useContext(MealPlanStateContext);
   if (!context) {
-    throw new Error("useTrainerState must be used within a TrainerProvider");
+    throw new Error("useMealState must be used within a MealProvider");
   }
   return context;
 };
 
-export const useTrainerActions = () => {
+export const useMealActions = () => {
   const context = useContext(MealPlanActionContext);
   if (!context) {
-    throw new Error("useTrainerActions must be used within a TrainerProvider");
+    throw new Error("useMealActions must be used within a MealProvider");
   }
   return context;
 };
