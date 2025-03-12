@@ -33,6 +33,7 @@ import CreateClientForm from "@/components/create-client";
 import ClientList from "@/components/client-list";
 import MealPlan from "@/components/meal-plans";
 import FoodItems from "@/components/food-items";
+import UserProfile from "@/components/user-profile";
 
 const { Header, Content, Sider } = Layout;
 const { Title, Text } = Typography;
@@ -42,7 +43,7 @@ type Props = {
 };
 
 const ProtectedTrainerLayout = withAuth(
-  ({ }: Props) => {
+  ({}: Props) => {
     const [currentPage, setCurrentPage] = useState("home");
     const [collapsed, setCollapsed] = useState(false);
     const [drawerVisible, setDrawerVisible] = useState(false);
@@ -396,6 +397,7 @@ const ProtectedTrainerLayout = withAuth(
               boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
             }}
           >
+            <UserProfile />
             {isMobile && (
               <Button
                 type="text"
