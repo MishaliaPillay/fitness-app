@@ -36,6 +36,7 @@ export default function ClientForm() {
     setLoading(true);
 
     const clientData: IClient = {
+      _id: "",
       fullName: values.fullName,
       email: values.email,
       contactNumber: values.contactNumber,

@@ -122,9 +122,9 @@ const ClientDashboard: React.FC = () => {
         <div style={{ marginTop: 40 }}>
           <Title level={2}>Your Workout Schedule</Title>
           <ul>
-            <li>Monday: 30-minute Cardio - 8:00 AM</li>
-            <li>Wednesday: 45-minute Strength Training - 10:00 AM</li>
-            <li>Friday: Yoga - 5:00 PM</li>
+            <li key={1}>Monday: 30-minute Cardio - 8:00 AM</li>
+            <li key={2}>Wednesday: 45-minute Strength Training - 10:00 AM</li>
+            <li key={3}>Friday: Yoga - 5:00 PM</li>
           </ul>
         </div>
 

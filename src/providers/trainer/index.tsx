@@ -53,7 +53,7 @@ export const TrainerProvider = ({
           Authorization: `${token}`,
         },
       });
-      console.log(response.data.data);
+     
       dispatch(getTrainersSuccess(response.data.data));
     } catch (error) {
       console.error(

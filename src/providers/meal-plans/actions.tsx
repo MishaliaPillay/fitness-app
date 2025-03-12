@@ -1,111 +1,114 @@
-// "use client";
-// import { IFood, IFoodStateContext } from "./context";
-// import { createAction } from "redux-actions";
-// //make enums defining the actions that can be dispatched
+"use client";
+import { IMealPlan, IMealPlanStateContext } from "./context";
+import { createAction } from "redux-actions";
+//make enums defining the actions that can be dispatched
 
-// export enum FoodActionEnums {
-//   // define 3 states for each action (pending , success, error)
+export enum MealActionEnums {
+  // define 3 states for each action (pending , success, error)
 
-//   getAllFoodPending = "GET_FoodS_PENDING",
-//   getAllFoodSuccess = "GET_FoodS_SUCCESS",
-//   getAllFoodError = "GET_Foods_ERROR",
+  getMealPlanPending = "GET_MealS_PENDING",
+  getMealPlanSuccess = "GET_MealS_SUCCESS",
+  getMealPlanError = "GET_Meals_ERROR",
 
-//   getFoodCategoryPending = "GET_Food_PENDING",
-//   getFoodCategorySuccess = "GET_Food_SUCCESS",
-//   getFoodCategoryError = "GET_Food_ERROR",
+  getMealClientPending = "GET_Meal_PENDING",
+  getMealClientSuccess = "GET_Meal_SUCCESS",
+  getMealClientError = "GET_Meal_ERROR",
 
-//   createFoodPending = "CREATE_Food_PENDING",
-//   createFoodSuccess = "CREATE_Food_SUCCESS",
-//   createFoodError = "CREATE_Food_ERROR",
+  createMealPlanPending = "CREATE_Meal_PENDING",
+  createMealPlanSuccess = "CREATE_Meal_SUCCESS",
+  createMealPlanError = "CREATE_Meal_ERROR",
 
-//   searchFoodPending = "SEARCH_Food_PENDING",
-//   searchFoodSuccess = "SEARCH_Food_SUCCESS",
-//   searchFoodError = "SEARCH_Food_ERROR",
-// }
+  getMealTrainerPending = "GET_MealTrainer_PENDING",
+  getMealTrainerSuccess = "GET_MealTrainer_SUCCESS",
+  getMealTrainerError = "GET_MealTrainer_ERROR",
+}
 
-// // createAction<PayloadType>(actionType, payloadCreator)
+// createAction<PayloadType>(actionType, payloadCreator)
 
-// //Get all Foods actions
+//Get all Meals actions
 
-// export const getAllFoodPending = createAction<IFoodStateContext>(
-//   FoodActionEnums.getAllFoodPending,
+export const getMealPlanPending = createAction<IMealPlanStateContext>(
+  MealActionEnums.getMealPlanPending,
 
-//   () => ({ isPending: true, isSuccess: false, isError: false })
-// );
+  () => ({ isPending: true, isSuccess: false, isError: false })
+);
 
-// export const getAllFoodSuccess = createAction<IFoodStateContext, IFood[]>(
-//   FoodActionEnums.getAllFoodSuccess,
+export const getMealPlanSuccess = createAction<
+  IMealPlanStateContext,
+  IMealPlan[]
+>(
+  MealActionEnums.getMealPlanSuccess,
 
-//   (foods: IFood[]) => ({
-//     isPending: false,
-//     isSuccess: true,
-//     isError: false,
-//     foods,
-//   })
-// );
+  (meals: IMealPlan[]) => ({
+    isPending: false,
+    isSuccess: true,
+    isError: false,
+    meals,
+  })
+);
 
-// export const getAllFoodError = createAction<IFoodStateContext>(
-//   FoodActionEnums.getAllFoodError,
+export const getMealPlanError = createAction<IMealPlanStateContext>(
+  MealActionEnums.getMealPlanError,
 
-//   () => ({ isPending: false, isSuccess: false, isError: true })
-// );
+  () => ({ isPending: false, isSuccess: false, isError: true })
+);
 
-// export const getFoodCategoryPending = createAction<IFoodStateContext>(
-//   FoodActionEnums.getFoodCategoryPending,
-//   () => ({ isPending: true, isSuccess: false, isError: false })
-// );
+export const getMealClientPending = createAction<IMealPlanStateContext>(
+  MealActionEnums.getMealClientPending,
+  () => ({ isPending: true, isSuccess: false, isError: false })
+);
 
-// export const getFoodCategorySuccess = createAction<IFoodStateContext, IFood>(
-//   FoodActionEnums.getFoodCategorySuccess,
-//   (food: IFood) => ({
-//     isPending: false,
-//     isSuccess: true,
-//     isError: false,
-//     food,
-//   })
-// );
+export const getMealClientSuccess = createAction<
+  IMealPlanStateContext,
+  IMealPlan
+>(MealActionEnums.getMealClientSuccess, (meal: IMealPlan) => ({
+  isPending: false,
+  isSuccess: true,
+  isError: false,
+  meal,
+}));
 
-// export const getFoodCategoryError = createAction<IFoodStateContext>(
-//   FoodActionEnums.getFoodCategoryError,
-//   () => ({ isPending: false, isSuccess: false, isError: true })
-// );
+export const getMealClientError = createAction<IMealPlanStateContext>(
+  MealActionEnums.getMealClientError,
+  () => ({ isPending: false, isSuccess: false, isError: true })
+);
 
-// export const createFoodPending = createAction<IFoodStateContext>(
-//   FoodActionEnums.createFoodPending,
-//   () => ({ isPending: true, isSuccess: false, isError: false })
-// );
+export const createMealPlanPending = createAction<IMealPlanStateContext>(
+  MealActionEnums.createMealPlanPending,
+  () => ({ isPending: true, isSuccess: false, isError: false })
+);
 
-// export const createFoodSuccess = createAction<IFoodStateContext, IFood[]>(
-//   FoodActionEnums.createFoodSuccess,
-//   (foods: IFood[]) => ({
-//     isPending: false,
-//     isSuccess: true,
-//     isError: false,
-//     foods,
-//   })
-// );
+export const createMealPlanSuccess = createAction<
+  IMealPlanStateContext,
+  IMealPlan[]
+>(MealActionEnums.createMealPlanSuccess, (meals: IMealPlan[]) => ({
+  isPending: false,
+  isSuccess: true,
+  isError: false,
+  meals,
+}));
 
-// export const createFoodError = createAction<IFoodStateContext>(
-//   FoodActionEnums.createFoodError,
-//   () => ({ isPending: false, isSuccess: false, isError: true })
-// );
+export const createMealPlanError = createAction<IMealPlanStateContext>(
+  MealActionEnums.createMealPlanError,
+  () => ({ isPending: false, isSuccess: false, isError: true })
+);
 
-// export const searchFoodPending = createAction<IFoodStateContext>(
-//   FoodActionEnums.searchFoodPending,
-//   () => ({ isPending: true, isSuccess: false, isError: false })
-// );
+export const getMealTrainerPending = createAction<IMealPlanStateContext>(
+  MealActionEnums.getMealTrainerPending,
+  () => ({ isPending: true, isSuccess: false, isError: false })
+);
 
-// export const searchFoodSuccess = createAction<IFoodStateContext, IFood>(
-//   FoodActionEnums.searchFoodSuccess,
-//   (food: IFood) => ({
-//     isPending: false,
-//     isSuccess: true,
-//     isError: false,
-//     food,
-//   })
-// );
+export const getMealTrainerSuccess = createAction<
+  IMealPlanStateContext,
+  IMealPlan
+>(MealActionEnums.getMealTrainerSuccess, (meal: IMealPlan) => ({
+  isPending: false,
+  isSuccess: true,
+  isError: false,
+  meal,
+}));
 
-// export const searchFoodError = createAction<IFoodStateContext>(
-//   FoodActionEnums.searchFoodError,
-//   () => ({ isPending: false, isSuccess: false, isError: true })
-// );
+export const getMealTrainerError = createAction<IMealPlanStateContext>(
+  MealActionEnums.getMealTrainerError,
+  () => ({ isPending: false, isSuccess: false, isError: true })
+);

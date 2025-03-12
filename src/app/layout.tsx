@@ -7,6 +7,7 @@ import { UserProvider } from "@/providers/userlogin";
 import { ClientProvider } from "@/providers/client";
 
 import { FoodProvider } from "@/providers/food-items";
+import { MealProvider } from "@/providers/meal-plans";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,9 +25,57 @@ export const metadata: Metadata = {
 };
 const fitnessColors = {
   token: {
-    colorPrimary: "#07c727",
-    colorInfo: "#07c727",
-    colorBgBase: "#fafbff",
+    colorPrimary: "#04d407",
+    colorInfo: "#04d407",
+    colorBgSpotlight: "#b3eb24",
+    colorTextBase: "#ffffff",
+    colorBgBase: "#151516",
+    colorBgContainer: "#151516",
+    colorBorder: "#a1bf54",
+    colorBgElevated: "#e1e4eb",
+    colorBorderSecondary: "#bbbbbb",
+    colorTextQuaternary: "#ffffff",
+    colorTextTertiary: "#ffffff",
+    colorTextSecondary: "#fb0000",
+    colorText: "#ffffff",
+  },
+  components: {
+    Dropdown: {
+      colorText: "rgb(0,0,0)",
+      colorTextDisabled: "rgba(0,0,0,0.25)",
+      colorTextDescription: "rgba(124,124,124,0.45)",
+      colorBgElevated: "rgb(255,255,255)",
+    },
+    Select: {
+      colorText: "rgba(255,255,255,0.85)",
+      colorTextDisabled: "rgba(245,239,239,0.63)",
+      colorBgContainer: "rgb(0,0,0)",
+      colorTextQuaternary: "rgb(160,217,17)",
+      colorTextPlaceholder: "rgba(255,255,255,0.93)",
+      colorBgElevated: "rgb(67,68,66)",
+      optionSelectedBg: "rgb(133,134,135)",
+      optionActiveBg: "rgba(0,0,0,0.24)",
+    },
+    Alert: {
+      colorTextHeading: "rgb(0,0,0)",
+      colorText: "rgb(0,0,0)",
+    },
+    Message: {
+      contentBg: "rgb(116,116,116)",
+    },
+    Table: {
+      controlItemBgActive: "rgb(11,91,0)",
+      rowHoverBg: "rgb(105,105,105)",
+    },
+    Tooltip: {
+      colorBgSpotlight: "rgb(82,196,26)",
+    },
+    Popover: {
+      colorBgElevated: "rgb(196,196,196)",
+    },
+    Modal: {
+      colorText: "rgb(0,0,0)",
+    },
   },
 };
 export default function RootLayout({
@@ -36,19 +85,23 @@ export default function RootLayout({
 }>) {
   return (
     <ConfigProvider theme={fitnessColors}>
-      <TrainerProvider>
-        <ClientProvider>
-          <UserProvider>
-            <FoodProvider>
-              <html lang="en">
-                <body className={`${geistSans.variable} ${geistMono.variable}`}>
-                  {children}
-                </body>
-              </html>
-            </FoodProvider>
-          </UserProvider>
-        </ClientProvider>
-      </TrainerProvider>
+      <MealProvider>
+        <TrainerProvider>
+          <ClientProvider>
+            <UserProvider>
+              <FoodProvider>
+                <html lang="en">
+                  <body
+                    className={`${geistSans.variable} ${geistMono.variable}`}
+                  >
+                    {children}
+                  </body>
+                </html>
+              </FoodProvider>
+            </UserProvider>
+          </ClientProvider>
+        </TrainerProvider>{" "}
+      </MealProvider>
     </ConfigProvider>
   );
 }

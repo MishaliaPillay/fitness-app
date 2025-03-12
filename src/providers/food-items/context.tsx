@@ -4,7 +4,7 @@ import { createContext } from "react";
 // make a Food object
 
 export interface IFood {
-  id?: string;
+  id: string;
   name: string;
   category: string;
   servingSize: number;
