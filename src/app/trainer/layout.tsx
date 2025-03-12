@@ -27,7 +27,7 @@ import {
   AppleOutlined,
   TeamOutlined,
 } from "@ant-design/icons";
-import { useRouter } from "next/navigation";
+
 import withAuth from "@/hoc/with-auth";
 import CreateClientForm from "@/components/create-client";
 import ClientList from "@/components/client-list";
@@ -42,7 +42,7 @@ type Props = {
 };
 
 const ProtectedTrainerLayout = withAuth(
-  ({ children }: Props) => {
+  ({ }: Props) => {
     const [currentPage, setCurrentPage] = useState("home");
     const [collapsed, setCollapsed] = useState(false);
     const [drawerVisible, setDrawerVisible] = useState(false);
@@ -129,7 +129,7 @@ const ProtectedTrainerLayout = withAuth(
           return (
             <div>
               <Title level={3} className="welcome-title">
-                Welcome back, Alex! Let's make today a strong one.
+                Welcome back, Alex! Let&apos;s make today a strong one.
               </Title>
               <Row gutter={[16, 16]} style={{ marginBottom: "20px" }}>
                 <Col xs={24} md={12}>
@@ -138,7 +138,7 @@ const ProtectedTrainerLayout = withAuth(
                     alt="Alex leading a fitness class"
                     style={{ width: "100%", borderRadius: 8 }}
                   />
-                  <Title level={4}>Today's Schedule</Title>
+                  <Title level={4}>Today&apos;s Schedule</Title>
                   <ul style={{ listStyleType: "none", padding: 0 }}>
                     <li>
                       <Text>
