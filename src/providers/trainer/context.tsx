@@ -14,6 +14,9 @@ export interface ITrainer {
   activeState: boolean;
   trial: boolean;
   policiesAccepted: boolean;
+  fullName: string;
+  id: string;
+  date: string;
 }
 
 //make a shape for the context
@@ -29,7 +32,7 @@ export interface ITrainerStateContext {
 //define the actions that will be performed on Trainers
 
 export interface ITrainerActionContext {
-  getTrainers: () => void;
+  getTrainers: (id: string) => void;
   getTrainer: (id: string) => void;
   createTrainer: (trainer: ITrainer) => void;
   updateTrainer: (trainer: ITrainer) => void;

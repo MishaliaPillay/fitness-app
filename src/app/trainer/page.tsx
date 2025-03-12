@@ -3,6 +3,7 @@ import React from "react";
 import ProtectedTrainerLayout from "./layout"; // Now protected
 import UserProfile from "@/components/user-profile";
 import FoodItems from "@/components/food-items";
+import ClientList from "@/components/client-list";
 
 const TrainerDashboard: React.FC = () => {
   return (
@@ -15,6 +16,7 @@ const TrainerDashboard: React.FC = () => {
         <p>Here you can manage your clients and assign meal plans.</p>
       </div>
       <UserProfile />
+      <ClientList/>
     </ProtectedTrainerLayout>
   );
 };

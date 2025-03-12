@@ -2,16 +2,15 @@
 
 "use client";
 import UserProfile from "@/components/user-profile";
-import ProtectedClientLayout from "./layout"; // Now protected
 
+import ClientDashboardLayout from "./layout";
 
 const ClientDashboard: React.FC = () => {
   return (
-    <ProtectedClientLayout>
-     
+    <ClientDashboardLayout>
       <h2>Welcome, Client!</h2>
       <UserProfile />
-    </ProtectedClientLayout>
+    </ClientDashboardLayout>
   );
 };
 
