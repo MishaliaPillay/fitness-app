@@ -17,6 +17,7 @@ import {
   Button,
   Divider,
   Drawer,
+  Popover, // Added for hover popup
 } from "antd";
 import {
   MenuUnfoldOutlined,
@@ -397,7 +398,6 @@ const ProtectedTrainerLayout = withAuth(
               boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
             }}
           >
-            <UserProfile />
             {isMobile && (
               <Button
                 type="text"
@@ -408,11 +408,35 @@ const ProtectedTrainerLayout = withAuth(
                 style={{ marginRight: 16 }}
               />
             )}
-            <Title level={isMobile ? 4 : 3} style={{ margin: 0 }}>
+            <Title
+              level={isMobile ? 4 : 3}
+              style={{ margin: 0, color: "white" }}
+            >
               Trainer Dashboard
             </Title>
-            <div style={{ marginLeft: "auto" }}>
-              <Avatar src="/images/trainer.jpg" />
+            <div
+              style={{
+                marginLeft: "auto",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              {/* User Avatar with Profile Popup on Hover */}
+              <Popover
+                content={<UserProfile />}
+                title="User Profile"
+                trigger="hover"
+                mouseEnterDelay={0.3}
+                mouseLeaveDelay={0.5}
+                placement="bottomRight"
+                overlayStyle={{ width: "300px" }}
+              >
+                <Avatar
+                  src="/images/trainer.jpg"
+                  style={{ cursor: "pointer" }}
+                  size="large"
+                />
+              </Popover>
             </div>
           </Header>
           <Content
@@ -437,7 +461,6 @@ const ProtectedTrainerLayout = withAuth(
               style={{
                 padding: isMobile ? 16 : 24,
                 minHeight: 280,
-
                 borderRadius: 4,
               }}
             >
