@@ -37,7 +37,7 @@ export interface IMealPlan {
       };
     }
   ];
-  mealTotals: number;
+  mealTotals: { calories: number; carbs: number; protein: number; fat: number };
   base: boolean;
 }
 //make a shape for the context
@@ -54,7 +54,7 @@ export interface IMealPlanStateContext {
 
 export interface IMealPlanActionContext {
   getMealPlanClient: () => void;
-  getMealPlanTrainer: () => void;
+  getMealPlanTrainer: (mealPlan: IMealPlan) => void;
   createMealPlan: (mealPlan: IMealPlan) => void;
   getMealPlan: (mealPlan: IMealPlan) => void;
 }
