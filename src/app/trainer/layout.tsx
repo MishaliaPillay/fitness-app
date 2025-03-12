@@ -88,21 +88,21 @@ const ProtectedTrainerLayout = withAuth(
         progress: 80,
         description: "Weight Loss",
         progressType: "weight-loss",
-        image: "/images/sarah-profile.jpg",
+        image: "/images/sarah.jpg",
       },
       {
         name: "John Davis",
         progress: 15,
         description: "Strength Gain",
         progressType: "strength-gain",
-        image: "/images/john-profile.jpg",
+        image: "/images/john.jpg",
       },
       {
         name: "Emily Chen",
         progress: 90,
         description: "Workout Adherence",
         progressType: "workout-adherence",
-        image: "/images/emily-profile.jpg",
+        image: "/images/emily.jpg",
       },
     ];
 
@@ -134,7 +134,7 @@ const ProtectedTrainerLayout = withAuth(
               <Row gutter={[16, 16]} style={{ marginBottom: "20px" }}>
                 <Col xs={24} md={12}>
                   <Image
-                    src="/images/alex-leading-class.jpg"
+                    src="/images/exercise.jpg"
                     alt="Alex leading a fitness class"
                     style={{ width: "100%", borderRadius: 8 }}
                   />
@@ -177,7 +177,7 @@ const ProtectedTrainerLayout = withAuth(
                   <div style={{ textAlign: isMobile ? "center" : "left" }}>
                     <Avatar
                       size={isMobile ? 96 : 128}
-                      src="/images/trainer-profile.jpg"
+                      src="/images/trainer.jpg"
                       style={{ marginBottom: 20 }}
                     />
                   </div>
@@ -191,7 +191,7 @@ const ProtectedTrainerLayout = withAuth(
                       }}
                     >
                       <Avatar
-                        src="/images/client-profile.jpg"
+                        src="/images/sarah.jpg"
                         style={{ marginRight: 10 }}
                       />
                       <Text>Sarah Miller has updated her food log.</Text>
@@ -204,7 +204,7 @@ const ProtectedTrainerLayout = withAuth(
                       }}
                     >
                       <Avatar
-                        src="/images/client-profile.jpg"
+                        src="/images/john.jpg"
                         style={{ marginRight: 10 }}
                       />
                       <Text>
@@ -285,18 +285,6 @@ const ProtectedTrainerLayout = withAuth(
                 )}
               </Row>
               <Divider />
-              <Title level={4}>Quick Access</Title>
-              <Row gutter={[16, 16]}>
-                <Col xs={24} sm={8}>
-                  <Button block>Create New Workout Plan</Button>
-                </Col>
-                <Col xs={24} sm={8}>
-                  <Button block>Schedule Appointment</Button>
-                </Col>
-                <Col xs={24} sm={8}>
-                  <Button block>View Client Food Log</Button>
-                </Col>
-              </Row>
             </div>
           );
         case "create-client":
@@ -422,7 +410,7 @@ const ProtectedTrainerLayout = withAuth(
               Trainer Dashboard
             </Title>
             <div style={{ marginLeft: "auto" }}>
-              <Avatar src="/images/trainer-profile.jpg" />
+              <Avatar src="/images/trainer.jpg" />
             </div>
           </Header>
           <Content
@@ -458,7 +446,6 @@ const ProtectedTrainerLayout = withAuth(
             style={{
               padding: "16px",
               textAlign: "center",
-              backgroundColor: "#f0f2f5",
             }}
           >
             <Text>

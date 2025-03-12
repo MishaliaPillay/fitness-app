@@ -69,7 +69,7 @@ export default function ClientForm() {
           justifyContent: "center",
           alignItems: "center",
           minHeight: "100vh",
-          background: "#f0f2f5",
+       
         }}
       >
         <Card style={{ width: 400, padding: "24px" }}>
