@@ -36,7 +36,7 @@ const fitnessColors = {
     colorBorderSecondary: "#bbbbbb",
     colorTextQuaternary: "#ffffff",
     colorTextTertiary: "#ffffff",
-    colorTextSecondary: "#ffffff",
+    colorTextSecondary: "#fb0000",
     colorText: "#ffffff",
   },
   components: {
@@ -44,6 +44,7 @@ const fitnessColors = {
       colorText: "rgb(0,0,0)",
       colorTextDisabled: "rgba(0,0,0,0.25)",
       colorTextDescription: "rgba(124,124,124,0.45)",
+      colorBgElevated: "rgb(255,255,255)",
     },
     Select: {
       colorText: "rgba(255,255,255,0.85)",
@@ -57,6 +58,23 @@ const fitnessColors = {
     },
     Alert: {
       colorTextHeading: "rgb(0,0,0)",
+      colorText: "rgb(0,0,0)",
+    },
+    Message: {
+      contentBg: "rgb(116,116,116)",
+    },
+    Table: {
+      controlItemBgActive: "rgb(11,91,0)",
+      rowHoverBg: "rgb(105,105,105)",
+    },
+    Tooltip: {
+      colorBgSpotlight: "rgb(82,196,26)",
+    },
+    Popover: {
+      colorBgElevated: "rgb(196,196,196)",
+    },
+    Modal: {
+      colorText: "rgb(0,0,0)",
     },
   },
 };

@@ -38,7 +38,7 @@ export interface IMealPlan {
     }
   ];
   mealTotals: { calories: number; carbs: number; protein: number; fat: number };
-  base: boolean;
+  base: 1;
 }
 //make a shape for the context
 

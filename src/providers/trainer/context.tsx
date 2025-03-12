@@ -4,6 +4,7 @@ import { createContext } from "react";
 // make a Trainer object
 
 export interface ITrainer {
+  _id?: string;
   name: string;
   email: string;
   password: string;

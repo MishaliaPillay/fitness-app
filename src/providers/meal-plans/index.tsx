@@ -58,7 +58,7 @@ export const MealProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const getMealPlanTrainer = async (meal: IMealPlan) => {
+  const getMealPlanTrainer = async () => {
     dispatch(getMealTrainerPending());
     const endpoint = `/Trainers`;
     await instance
@@ -72,20 +72,20 @@ export const MealProvider = ({ children }: { children: React.ReactNode }) => {
       });
   };
 
-  const createMealPlan = async () => {
+  const createMealPlan = async (mealPlan: IMealPlan) => {
     dispatch(createMealPlanPending());
     const endpoint =
       "https://body-vault-server-b9ede5286d4c.herokuapp.com/api/mealplan";
 
     try {
-      const token = sessionStorage.getItem("jwt")?.trim();
+      const token = sessionStorage.getItem("jwt");
 
       if (!token) {
         dispatch(createMealPlanError());
         return;
       }
 
-      const response = await axios.get(endpoint, {
+      const response = await axios.post(endpoint, mealPlan, {
         headers: {
           Authorization: `${token}`,
         },

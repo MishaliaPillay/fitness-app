@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useFoodState, useFoodActions } from "@/providers/food-items";
 import { Table, Button, message } from "antd";
-import { Color } from "antd/es/color-picker";
 
 const CreateMealPlan = () => {
   const router = useRouter();
@@ -30,10 +29,6 @@ const CreateMealPlan = () => {
   ];
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    if (newSelectedRowKeys.length > 1) {
-      // Limit to only one selection
-      newSelectedRowKeys = newSelectedRowKeys.slice(0, 1);
-    }
     setSelectedFood(newSelectedRowKeys);
     message.info(`Selected ${newSelectedRowKeys.length} item(s)`);
   };
@@ -49,30 +44,80 @@ const CreateMealPlan = () => {
       return;
     }
 
+    // Create meal plan data structure
     const mealPlan = {
       name: `${clientName}'s Meal Plan`,
-      client: clientId,
-      trainer: "trainer_id", // Replace with actual trainer ID
-      meals: selectedFood
-        .map((foodId) => {
+      clientId,
+      trainerId: "trainer_id", // Replace with actual trainer ID
+      clientName,
+      description: "Sample description", // Add the description as needed
+      notes: "Sample notes", // Add any notes if needed
+      clientNotes: [], // You can update this based on client feedback
+      meals: [
+        {
+          name: "Sample Meal", // You can set specific meal names if needed
+          id: Date.now(), // Unique ID for each meal
+          note: "Meal note", // Meal-specific note
+          clientNotes: [], // Notes for client
+          items: selectedFood
+            .map((foodId) => {
+              const food = foods.find((item) => item.id === foodId);
+              if (!food) return null;
+              return {
+                name: food.name,
+                quantity: 1,
+                unit: "g", // or another unit you prefer
+                calories: Number(food.energy) || 0, // Ensure it's a number
+                carbs: Number(food.carbs) || 0, // Ensure it's a number
+                protein: Number(food.protein) || 0, // Ensure it's a number
+                fat: Number(food.fat) || 0, // Ensure it's a number
+                note: null,
+              };
+            })
+            .filter(Boolean), // Filter out null values if food is not found
+          itemTotals: {
+            calories: selectedFood.reduce((total: number, foodId) => {
+              const food = foods.find((item) => item.id === foodId);
+              return total + (Number(food?.energy) || 0); // Ensure it's a number
+            }, 0),
+            protein: selectedFood.reduce((total: number, foodId) => {
+              const food = foods.find((item) => item.id === foodId);
+              return total + (Number(food?.protein) || 0); // Ensure it's a number
+            }, 0),
+            carbs: selectedFood.reduce((total: number, foodId) => {
+              const food = foods.find((item) => item.id === foodId);
+              return total + (Number(food?.carbs) || 0); // Ensure it's a number
+            }, 0),
+            fat: selectedFood.reduce((total: number, foodId) => {
+              const food = foods.find((item) => item.id === foodId);
+              return total + (Number(food?.fat) || 0); // Ensure it's a number
+            }, 0),
+          },
+        },
+      ],
+      mealTotals: {
+        calories: selectedFood.reduce((total: number, foodId) => {
           const food = foods.find((item) => item.id === foodId);
-          if (!food) return null;
-          return {
-            name: food.name,
-            id: food.id,
-            items: [{ ...food, quantity: 1, unit: "g" }],
-            itemTotals: {
-              calories: food.energy || 0,
-              protein: food.protein || 0,
-              carbs: food.carbs || 0,
-              fat: food.fat || 0,
-            },
-          };
-        })
-        .filter(Boolean), // Remove null values
+          return total + (Number(food?.energy) || 0); // Ensure it's a number
+        }, 0),
+        carbs: selectedFood.reduce((total: number, foodId) => {
+          const food = foods.find((item) => item.id === foodId);
+          return total + (Number(food?.carbs) || 0); // Ensure it's a number
+        }, 0),
+        protein: selectedFood.reduce((total: number, foodId) => {
+          const food = foods.find((item) => item.id === foodId);
+          return total + (Number(food?.protein) || 0); // Ensure it's a number
+        }, 0),
+        fat: selectedFood.reduce((total: number, foodId) => {
+          const food = foods.find((item) => item.id === foodId);
+          return total + (Number(food?.fat) || 0); // Ensure it's a number
+        }, 0),
+      },
+      base: 1, // Assuming all plans are basic. Adjust if needed
     };
 
     try {
+      console.log(mealPlan);
       const token = sessionStorage.getItem("jwt")?.trim();
       const response = await fetch(
         "https://body-vault-server-b9ede5286d4c.herokuapp.com/api/mealplan",
@@ -85,13 +130,13 @@ const CreateMealPlan = () => {
           body: JSON.stringify(mealPlan),
         }
       );
-
+      console.log(mealPlan);
       if (!response.ok) throw new Error("Failed to create meal plan");
 
       message.success("Meal plan created successfully!");
       router.push("/trainer"); // Navigate back to trainer dashboard
     } catch (error) {
-      message.error("Failed to create meal plan.");
+      message.error("Failed to create meal plan." , error);
     }
   };
 
