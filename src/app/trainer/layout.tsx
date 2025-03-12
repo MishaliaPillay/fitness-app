@@ -1,26 +1,13 @@
 "use client"; // Required for client-side features like hooks
 
-import React from "react";
-import {
-  Form,
-  Input,
-  Layout,
-  Menu,
-  Breadcrumb,
-  Button,
-  Row,
-  Col,
-  Card,
-  Statistic,
-} from "antd";
+import React, { useState } from "react";
+import { Layout, Menu, Breadcrumb, Row, Col, Card, Statistic } from "antd";
+import { useRouter } from "next/navigation";
 import withAuth from "@/hoc/with-auth";
-import UserProfile from "@/components/user-profile";
 import CreateClientForm from "@/components/create-client"; // Import Create Client Form
-import FoodItems from "@/components/food-items";
 import ClientList from "@/components/client-list";
 import MealPlan from "@/components/meal-plans";
-import CreateMealPlan from "./create-meal-plan/page";
-
+import FoodItems from "@/components/food-items";
 
 const { Header, Content, Sider } = Layout;
 
@@ -29,26 +16,42 @@ type Props = {
 };
 
 const ProtectedTrainerLayout = withAuth(
-  ({children}: Props) => {
+  ({ children }: Props) => {
+    const [currentPage, setCurrentPage] = useState("home");
+
+    // Dummy data
+    const trainerData = {
+      totalClients: 10,
+      totalMealPlans: 5,
+      upcomingAppointments: 3,
+    };
+
+    // Handle sidebar menu click to change content
+    const handleMenuClick = (e: { key: string }) => {
+      setCurrentPage(e.key);
+    };
+
     return (
       <Layout style={{ minHeight: "100vh" }}>
         <Sider width={250} theme="dark">
           <div
             className="logo"
-            style={{ padding: "16px", color: "white", textAlign: "center" }}
+            style={{ padding: "16px", textAlign: "center" }}
           >
-            <h2>Trainer Dashboard</h2>
+            <h2 style={{ color: "white" }}>Trainer Dashboard</h2>
           </div>
           <Menu
             theme="dark"
             mode="inline"
-            defaultSelectedKeys={["1"]}
-            items={[
-              { key: "1", label: "Home" },
-              { key: "2", label: "Create Client" },
-              { key: "3", label: "Meal Plans" },
-            ]}
-          />
+            selectedKeys={[currentPage]}
+            onClick={handleMenuClick}
+          >
+            <Menu.Item key="home">Home</Menu.Item>
+            <Menu.Item key="create-client">Create Client</Menu.Item>
+            <Menu.Item key="meal-plans">Meal Plans</Menu.Item>
+            <Menu.Item key="food-items">Food Items</Menu.Item>
+            <Menu.Item key="clients">Client List</Menu.Item>
+          </Menu>
         </Sider>
         <Layout style={{ padding: "0 24px 24px" }}>
           <Header
@@ -65,14 +68,14 @@ const ProtectedTrainerLayout = withAuth(
             <Breadcrumb
               items={[{ title: "Home" }, { title: "Trainer Dashboard" }]}
             />
-            <div style={{ background: "#fff", padding: 24, minHeight: 280 }}>
+            <div style={{ padding: 24, minHeight: 280 }}>
               {/* Data Cards */}
               <Row gutter={16} style={{ marginBottom: "20px" }}>
                 <Col span={8}>
                   <Card>
                     <Statistic
                       title="Total Clients"
-                      value={10} // Replace with dynamic data
+                      value={trainerData.totalClients}
                       valueStyle={{ color: "#3f8600" }}
                     />
                   </Card>
@@ -81,7 +84,7 @@ const ProtectedTrainerLayout = withAuth(
                   <Card>
                     <Statistic
                       title="Total Meal Plans"
-                      value={5} // Replace with dynamic data
+                      value={trainerData.totalMealPlans}
                       valueStyle={{ color: "#3f8600" }}
                     />
                   </Card>
@@ -90,39 +93,39 @@ const ProtectedTrainerLayout = withAuth(
                   <Card>
                     <Statistic
                       title="Upcoming Appointments"
-                      value={3} // Replace with dynamic data
+                      value={trainerData.upcomingAppointments}
                       valueStyle={{ color: "#1890ff" }}
                     />
                   </Card>
                 </Col>
               </Row>
 
-              {/* Create Meal Plan */}
-              <h3>Create Meal Plan</h3>
-              <Form layout="vertical">
-                <Form.Item label="Plan Name">
-                  <Input placeholder="Enter meal plan name" />
-                </Form.Item>
-                <Button type="primary" htmlType="submit">
-                  Create Plan
-                </Button>
-              </Form>
+              {/* Content Display Based on Menu Selection */}
+              {currentPage === "home" && (
+                <div style={{}}>
+                  <h3>Latest Trainer News</h3>
+                  <p>New training techniques are available. Check them out!</p>
+                  <h3>Notifications</h3>
+                  <ul>
+                    <li>New client registered: John Doe</li>
+                    <li>Meal plan updated for Sarah</li>
+                    <li>Upcoming training session in 2 hours</li>
+                  </ul>
+                </div>
+              )}
 
-              <h3 style={{ marginTop: "30px" }}>Client List</h3>
-              <ul>
-                <li key={1}>Client 1 - Meal Plan: Healthy Eating</li>
-                <li key={2}>Client 2 - Meal Plan: Keto Diet</li>
-                <li key={3}>Client 3 - Meal Plan: Vegan Plan</li>
-              </ul>
-   <MealPlan />
-              {/* Create Client Form Display */}
-              <CreateClientForm />
+              {currentPage === "create-client" && <CreateClientForm />}
+              {currentPage === "clients" && <ClientList />}
+              {currentPage === "meal-plans" && <MealPlan />}
+              {currentPage === "food-items" && <FoodItems />}
             </div>
           </Content>
-       
-        <CreateMealPlan/>{children}
-          <ClientList /> <UserProfile />
-          <FoodItems />
+          <footer style={{ padding: "16px", textAlign: "center" }}>
+            <p>
+              Trainer Dashboard - Your platform for managing clients and meal
+              plans
+            </p>
+          </footer>
         </Layout>
       </Layout>
     );
