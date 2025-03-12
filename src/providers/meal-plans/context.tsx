@@ -5,8 +5,8 @@ import { createContext } from "react";
 
 export interface IMealPlan {
   name: string;
-  client: string;
-  trainer: string;
+  clientId: string;
+  trainerId: string;
   clientName: string;
   descrption: string;
   notes: string;
@@ -20,7 +20,7 @@ export interface IMealPlan {
       items: [
         {
           name: string;
-          quantity: string;
+          quantity: number;
           unit: string;
           calories: number;
           carbs: number;

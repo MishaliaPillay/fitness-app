@@ -43,9 +43,9 @@ const ProtectedClientLayout = withAuth(
             <div style={{ background: "#fff", padding: 24, minHeight: 280 }}>
               <h3>Your Meal Plans</h3>
               <ul>
-                <li>Healthy Eating - Assigned by Trainer: Trainer Name</li>
-                <li>Keto Diet - Assigned by Trainer: Trainer Name</li>
-                <li>Vegan Plan - Assigned by Trainer: Trainer Name</li>
+                <li key={1}>Healthy Eating - Assigned by Trainer: Trainer Name</li>
+                <li key={2}>Keto Diet - Assigned by Trainer: Trainer Name</li>
+                <li key={3}>Vegan Plan - Assigned by Trainer: Trainer Name</li>
               </ul>
               <h3>Track Progress</h3>
               <p>Progress: 60% complete</p>

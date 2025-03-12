@@ -75,19 +75,29 @@ export const MealProvider = ({ children }: { children: React.ReactNode }) => {
   const createMealPlan = async () => {
     dispatch(createMealPlanPending());
     const endpoint =
-      "https://body-vault-server-b9ede5286d4c.herokuapp.com/api/users/register";
+      "https://body-vault-server-b9ede5286d4c.herokuapp.com/api/mealplan";
+
     try {
-      console.log("Sending Trainer data");
-      const response = await axios.post(endpoint);
-      // console.log("Response", response.data);
+      const token = sessionStorage.getItem("jwt")?.trim();
+
+      if (!token) {
+        dispatch(createMealPlanError());
+        return;
+      }
+
+      const response = await axios.get(endpoint, {
+        headers: {
+          Authorization: `${token}`,
+        },
+      });
+      console.log(response.data.data);
       dispatch(createMealPlanSuccess(response.data.data));
     } catch (error) {
       console.error(
-        "Error during signup:",
-        error.response?.data.message || error
+        "Error fetching client details:",
+        error.response?.data?.message || error
       );
       dispatch(createMealPlanError());
-      throw error;
     }
   };
 
