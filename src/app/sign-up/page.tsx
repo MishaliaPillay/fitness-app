@@ -33,6 +33,9 @@ export default function SignUp() {
         activeState: true,
         trial: false,
         policiesAccepted: true,
+        fullName: "",
+        id: "",
+        date: "",
       };
 
       let signupSuccess = false;

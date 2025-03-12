@@ -36,17 +36,32 @@ export const TrainerProvider = ({
   const [state, dispatch] = useReducer(TrainerReducer, INITIAL_STATE);
   const instance = getAxiosInstance();
 
-  const getTrainers = async () => {
+  const getTrainers = async (id: string) => {
     dispatch(getTrainersPending());
-    const endpoint = `https://fakestoreapi.com/Trainers`;
-    await axios(endpoint)
-      .then((response) => {
-        dispatch(getTrainersSuccess(response.data));
-      })
-      .catch((error) => {
-        console.error(error);
+    const endpoint = `https://body-vault-server-b9ede5286d4c.herokuapp.com/api/client/trainer/${id}/clients`;
+
+    try {
+      const token = sessionStorage.getItem("jwt")?.trim();
+
+      if (!token) {
         dispatch(getTrainersError());
+        return;
+      }
+
+      const response = await axios.get(endpoint, {
+        headers: {
+          Authorization: `${token}`,
+        },
       });
+     
+      dispatch(getTrainersSuccess(response.data.data));
+    } catch (error) {
+      console.error(
+        "Error fetching client details:",
+        error.response?.data?.message || error
+      );
+      dispatch(getTrainersError());
+    }
   };
 
   const getTrainer = async (id: string) => {
@@ -70,7 +85,7 @@ export const TrainerProvider = ({
     try {
       console.log("Sending Trainer data", Trainer);
       const response = await axios.post(endpoint, Trainer);
-     // console.log("Response", response.data);
+      // console.log("Response", response.data);
       dispatch(createTrainerSuccess(response.data.data));
     } catch (error) {
       console.error(

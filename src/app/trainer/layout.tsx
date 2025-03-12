@@ -17,6 +17,10 @@ import withAuth from "@/hoc/with-auth";
 import UserProfile from "@/components/user-profile";
 import CreateClientForm from "@/components/create-client"; // Import Create Client Form
 import FoodItems from "@/components/food-items";
+import ClientList from "@/components/client-list";
+import MealPlan from "@/components/meal-plans";
+import CreateMealPlan from "./create-meal-plan/page";
+
 
 const { Header, Content, Sider } = Layout;
 
@@ -25,7 +29,7 @@ type Props = {
 };
 
 const ProtectedTrainerLayout = withAuth(
-  ({}: Props) => {
+  ({children}: Props) => {
     return (
       <Layout style={{ minHeight: "100vh" }}>
         <Sider width={250} theme="dark">
@@ -56,7 +60,6 @@ const ProtectedTrainerLayout = withAuth(
             }}
           >
             <h2 style={{ margin: 0 }}>Trainer Dashboard</h2>
-           
           </Header>
           <Content style={{ padding: "0 50px", marginTop: 16 }}>
             <Breadcrumb
@@ -107,16 +110,19 @@ const ProtectedTrainerLayout = withAuth(
 
               <h3 style={{ marginTop: "30px" }}>Client List</h3>
               <ul>
-                <li>Client 1 - Meal Plan: Healthy Eating</li>
-                <li>Client 2 - Meal Plan: Keto Diet</li>
-                <li>Client 3 - Meal Plan: Vegan Plan</li>
+                <li key={1}>Client 1 - Meal Plan: Healthy Eating</li>
+                <li key={2}>Client 2 - Meal Plan: Keto Diet</li>
+                <li key={3}>Client 3 - Meal Plan: Vegan Plan</li>
               </ul>
-
+   <MealPlan />
               {/* Create Client Form Display */}
               <CreateClientForm />
             </div>
-          </Content> <UserProfile />
-          <FoodItems/>
+          </Content>
+       
+        <CreateMealPlan/>{children}
+          <ClientList /> <UserProfile />
+          <FoodItems />
         </Layout>
       </Layout>
     );

@@ -4,6 +4,7 @@ import { createContext } from "react";
 // make a Client object
 
 export interface IClient {
+  _id: string;
   fullName: string;
   email: string;
   contactNumber: string;

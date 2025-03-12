@@ -19,20 +19,10 @@ const UserProfile = () => {
   return (
     <div style={{ color: "red" }}>
       <h2>User Profile</h2>
-      <ul>
-        <li>
-          <strong>Name:</strong> {user.name}
-        </li>
-        <li>
-          <strong>Role:</strong> {user.role}
-        </li>
-        <li>
-          <strong>Email:</strong> {user.email}
-        </li>
-        <li>
-          <strong>id:</strong> {user.id}
-        </li>
-      </ul>
+      <strong>Name:</strong> {user.name}
+      <strong>Role:</strong> {user.role}
+      <strong>Email:</strong> {user.email}
+      <strong>id:</strong> {user.id}
     </div>
   );
 };
