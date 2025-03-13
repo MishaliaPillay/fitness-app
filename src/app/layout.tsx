@@ -32,7 +32,7 @@ const fitnessColors = {
     colorBgBase: "#151516",
     colorBgContainer: "#151516",
     colorBorder: "#a1bf54",
-    colorBgElevated: "#e1e4eb",
+    colorBgElevated: "#626262",
     colorBorderSecondary: "#bbbbbb",
     colorTextQuaternary: "#ffffff",
     colorTextTertiary: "#ffffff",
@@ -75,6 +75,9 @@ const fitnessColors = {
     },
     Modal: {
       colorText: "rgb(0,0,0)",
+    },
+    Layout: {
+      siderBg: "rgb(0,12,23)",
     },
   },
 };
