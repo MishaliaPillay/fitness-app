@@ -1,8 +1,8 @@
+// Second file: User Context
 "use client";
 import { createContext } from "react";
 
-// make a Userobject
-
+// User object interface
 export interface IUser {
   id?: string;
   name?: string;
@@ -17,8 +17,7 @@ export interface IUser {
   date?: string;
 }
 
-//make a shape for the context
-
+// Context shape interface
 export interface IUserStateContext {
   isPending: boolean;
   isSuccess: boolean;
@@ -27,14 +26,14 @@ export interface IUserStateContext {
   users?: IUser[]; // Array of Users
 }
 
-//define the actions that will be performed on Users
-
+// User action context interface
 export interface IUserActionContext {
-  getUsers: () => void;
-  getUser: () => void;
-  verifyUser: (user: IUser) => void;
+  // getUsers: () => Promise<UserListResponse>;
+  getUser: () => Promise<UserResponse>;
+  verifyUser: (user: IUser) => Promise<void>;
 }
 
+// Login response interface
 export interface ILoginResponse {
   status: number;
   message: string;
@@ -43,14 +42,29 @@ export interface ILoginResponse {
   };
 }
 
-//initial state with default  values
+// Interface for user response
+export interface UserResponse {
+  data: {
+    data: IUser;
+  };
+}
+
+// Interface for user list response
+export interface UserListResponse {
+  data: {
+    data: IUser[];
+  };
+}
+
+// Initial state with default values
 export const INITIAL_STATE: IUserStateContext = {
   isPending: false,
   isSuccess: false,
   isError: false,
 };
 
-//create the state context and the action context
+// Create the state context and the action context
 export const UserStateContext = createContext<IUserStateContext>(INITIAL_STATE);
-
-export const UserActionContext = createContext<IUserActionContext>(undefined);
+export const UserActionContext = createContext<IUserActionContext | undefined>(
+  undefined
+);

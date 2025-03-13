@@ -1,8 +1,18 @@
 "use client";
 import { createContext } from "react";
 
-// make a Client object
+// Client registration interface
+export interface IClientRegistration {
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  dateOfBirth: string;
+  contactNumber: string;
+  policiesAccepted: boolean;
+}
 
+// Client interface
 export interface IClient {
   _id: string;
   fullName: string;
@@ -14,33 +24,32 @@ export interface IClient {
   trainerId: string;
 }
 
-//make a shape for the context
-
+// Context shape
 export interface IClientStateContext {
   isPending: boolean;
   isSuccess: boolean;
   isError: boolean;
+  errorMessage?: string;
   client?: IClient;
   clients?: IClient[]; // Array of Clients
 }
 
-//define the actions that will be performed on Clients
-
+// Actions that will be performed on Clients
 export interface IClientActionContext {
   getClients: () => void;
   getClient: () => void;
   createClient: (client: IClient) => void;
-  registerClient: (client: IClient) => void;
+  registerClient: (client: IClientRegistration) => Promise<void>;
 }
 
-//initial state with default  values
+// Initial state with default values
 export const INITIAL_STATE: IClientStateContext = {
   isPending: false,
   isSuccess: false,
   isError: false,
 };
 
-//create the state context and the action context
+// Create the state context and the action context
 export const ClientStateContext =
   createContext<IClientStateContext>(INITIAL_STATE);
 
