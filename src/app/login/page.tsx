@@ -44,7 +44,7 @@ export default function Login() {
 
       if (loginSuccess) {
         const user = { email, password, role };
-        localStorage.setItem("currentUser", JSON.stringify(user));
+        localStorage.setItem("currentUser", JSON.stringify(user.role));
 
         setTimeout(() => {
           if (role === "trainer") {
@@ -107,7 +107,10 @@ export default function Login() {
             }}
           >
             <Card style={{ width: 400, padding: "24px" }}>
-              <Title level={2} style={{ textAlign: "center", marginBottom: 32 }}>
+              <Title
+                level={2}
+                style={{ textAlign: "center", marginBottom: 32 }}
+              >
                 Login
               </Title>
               <Form
@@ -145,7 +148,9 @@ export default function Login() {
 
                 <Form.Item
                   name="role"
-                  rules={[{ required: true, message: "Please select your role!" }]}
+                  rules={[
+                    { required: true, message: "Please select your role!" },
+                  ]}
                 >
                   <Select placeholder="Select your role" size="large">
                     <Select.Option value="trainer">Trainer</Select.Option>

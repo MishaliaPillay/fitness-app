@@ -27,15 +27,16 @@ import {
   BarsOutlined,
   AppleOutlined,
   TeamOutlined,
+  LogoutOutlined,
 } from "@ant-design/icons";
 
 import withAuth from "@/hoc/with-auth";
 import CreateClientForm from "@/components/create-client";
 import ClientList from "@/components/client-list";
-import MealPlan from "@/components/meal-plans";
+
 import FoodItems from "@/components/food-items";
 import UserProfile from "@/components/user-profile";
-
+import { useRouter } from "next/navigation";
 const { Header, Content, Sider } = Layout;
 const { Title, Text } = Typography;
 
@@ -49,7 +50,7 @@ const ProtectedTrainerLayout = withAuth(
     const [collapsed, setCollapsed] = useState(false);
     const [drawerVisible, setDrawerVisible] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
-
+    const router = useRouter();
     // Check if window exists (client-side)
     useEffect(() => {
       const checkIsMobile = () => {
@@ -71,6 +72,16 @@ const ProtectedTrainerLayout = withAuth(
 
     const toggleDrawer = () => {
       setDrawerVisible(!drawerVisible);
+    };
+    const handleLogout = () => {
+      // Clear all storage
+      localStorage.clear();
+      sessionStorage.clear();
+
+      // You might want to add any additional cleanup here
+
+      // Redirect to login page
+      router.push("/login");
     };
 
     // Dummy data for the dashboard
@@ -293,8 +304,7 @@ const ProtectedTrainerLayout = withAuth(
           return <CreateClientForm />;
         case "clients":
           return <ClientList />;
-        case "meal-plans":
-          return <MealPlan />;
+
         case "food-items":
           return <FoodItems />;
         default:
@@ -328,6 +338,12 @@ const ProtectedTrainerLayout = withAuth(
         key: "clients",
         icon: <TeamOutlined />,
         label: "Client List",
+      },
+      {
+        key: "5",
+        icon: <LogoutOutlined />,
+        label: "Sign Out",
+        onClick: handleLogout,
       },
     ];
 
