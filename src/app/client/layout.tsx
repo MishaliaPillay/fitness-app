@@ -47,7 +47,6 @@ const UserProfile = () => (
 
 // Sample data
 
-
 const workoutSessions = [
   { day: "Monday", type: "Upper Body", completed: true },
   { day: "Tuesday", type: "Lower Body", completed: true },
@@ -62,7 +61,7 @@ const ProtectedClientLayout = withAuth(
   ({ children }: Props) => {
     const [collapsed, setCollapsed] = useState(false);
     const [waterIntake, setWaterIntake] = useState(Array(8).fill(false));
-  
+
     const [drawerVisible, setDrawerVisible] = useState(false);
     const router = useRouter();
 
@@ -150,7 +149,7 @@ const ProtectedClientLayout = withAuth(
               boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
             }}
           >
-            { (
+            {
               <Button
                 type="text"
                 icon={
@@ -159,12 +158,9 @@ const ProtectedClientLayout = withAuth(
                 onClick={toggleDrawer}
                 style={{ marginRight: 16 }}
               />
-            )}
-            <Title
-            
-              style={{ margin: 0, color: "white" }}
-            >
-              Trainer Dashboard
+            }
+            <Title style={{ margin: 0, color: "white" }}>
+              Client Dashboard
             </Title>
             <div
               style={{
@@ -312,7 +308,7 @@ const ProtectedClientLayout = withAuth(
                   </Button>
                 </Card>
               </Col>
-
+              <UserProfile />
               {/* Rest of the component remains the same */}
               {children}
             </Row>

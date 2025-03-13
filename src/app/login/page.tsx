@@ -11,15 +11,23 @@ import Image from "next/image"; // Import next/image component
 
 const { Title } = Typography;
 
+// Define an interface for the getUser response
+interface UserResponse {
+  data: {
+    data: IUser;
+  };
+}
+
 export default function Login() {
   const [messageApi, contextHolder] = message.useMessage();
   const [form] = Form.useForm();
   const router = useRouter();
-  const { verifyUser } = useUserActions();
+  const { verifyUser, getUser } = useUserActions();
+
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async (values: LoginForm) => {
-    const { email, password, role } = values;
+    const { email } = values;
     setLoading(true);
 
     try {
@@ -28,37 +36,83 @@ export default function Login() {
         password: values.password,
       };
 
-      let loginSuccess = false;
-
       try {
-        verifyUser(signedUser);
+        await verifyUser(signedUser);
+
         messageApi.success("Login successful");
-        loginSuccess = true;
-      } catch (error) {
-        messageApi.error("Login failed. Please check your credentials.");
-        console.error("Verification failed:", error);
-        loginSuccess = false;
-        setLoading(false);
-        return;
-      }
 
-      if (loginSuccess) {
-        const user = { email, password, role };
-        localStorage.setItem("currentUser", JSON.stringify(user.role));
+        const userInfo = { email };
+        localStorage.setItem("currentUser", JSON.stringify(userInfo));
 
-        setTimeout(() => {
-          if (role === "trainer") {
-            router.push("/trainer");
-          } else if (role === "client") {
-            router.push("/client");
-          } else {
-            messageApi.warning("Invalid role selected");
-            router.push("/login");
+        setTimeout(async () => {
+          console.log("Calling getUser...");
+
+          try {
+            const response: UserResponse = await getUser();
+
+            console.log("getUser raw response:", response);
+
+            let extractedRole: string | null = null;
+
+            if (response && response.data && response.data.data) {
+              extractedRole = response.data.data.role || null;
+              console.log("Extracted user role:", extractedRole);
+              localStorage.setItem(
+                "currentUser",
+                JSON.stringify(response.data.data)
+              );
+            }
+
+            const finalRole = extractedRole;
+            console.log("Final role used for navigation:", finalRole);
+            if (finalRole === "admin") {
+              router.push("/trainer");
+              console.log("goin gto admin page");
+            } else if (finalRole == "user") {
+              router.push("/client");
+              console.log("going to client page");
+            } else {
+              console.log("idk why it doesnt want to route");
+            }
+          } catch (error) {
+            console.error("Error calling getUser:", error);
+            messageApi.warning("Proceeding with form-selected role");
           }
         }, 1000);
+      } catch (error: unknown) {
+        console.error("Login error:", error);
+
+        if (error && typeof error === 'object' && 'response' in error) {
+          const errorObj = error as { response: { status: number; data?: { data?: { message?: string | string[] } } } };
+          
+          switch (errorObj.response.status) {
+            case 401:
+              messageApi.error("Email doesn't exist");
+              break;
+            case 403:
+              messageApi.error("Incorrect password");
+              break;
+            default:
+              if (errorObj.response.data?.data?.message) {
+                const errorData = errorObj.response.data.data.message;
+                if (Array.isArray(errorData)) {
+                  const errorMsg = errorData
+                    .map((err) => Object.values(err).join(" "))
+                    .join("; ");
+                  messageApi.error(errorMsg);
+                } else {
+                  messageApi.error(errorData);
+                }
+              } else {
+                messageApi.error("Server error");
+              }
+          }
+        } else {
+          messageApi.error("Server not responding");
+        }
       }
     } catch (error) {
-      console.error("Failed to process login:", error);
+      console.error("Unexpected error:", error);
       messageApi.error("An unexpected error occurred");
     } finally {
       setLoading(false);
