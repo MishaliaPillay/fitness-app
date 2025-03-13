@@ -6,6 +6,7 @@ import {
   IClient,
   ClientActionContext,
   ClientStateContext,
+  IClientRegistration,
 } from "./context";
 import { ClientReducer } from "./reducer";
 import { useContext, useReducer } from "react";
@@ -88,7 +89,7 @@ export const ClientProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const registerClient = async (client: IClient) => {
+  const registerClient = async (client: IClientRegistration) => {
     dispatch(registerClientPending());
     const endpoint =
       "https://body-vault-server-b9ede5286d4c.herokuapp.com/api/users/register/mobile";

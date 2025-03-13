@@ -17,54 +17,102 @@ function withAuth<P extends object>(
     const [currentUser, setCurrentUser] = useState<{ role: string } | null>(
       null
     );
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
       setIsClient(true);
+      console.log("withAuth: Initial mount, checking auth");
 
       // Get user data from localStorage
       if (typeof window !== "undefined") {
         const storedUser = localStorage.getItem("currentUser");
+        console.log("withAuth: storedUser from localStorage:", storedUser);
+
         if (storedUser) {
           try {
             const user = JSON.parse(storedUser);
+            console.log("withAuth: Parsed user:", user);
             setCurrentUser(user);
+
+            // Debug role check
+            if (allowedRoles.length > 0) {
+              console.log("withAuth: Allowed roles:", allowedRoles);
+              console.log("withAuth: User role:", user.role);
+              console.log(
+                "withAuth: Has access:",
+                allowedRoles.includes(user.role)
+              );
+            }
           } catch (error) {
-           console.error("Error parsing user data from localStorage", error);
+            console.error("Error parsing user data from localStorage", error);
             setCurrentUser(null);
           }
         }
+
+        setIsLoading(false);
       }
     }, []);
 
+    // Separate useEffect just for role-based redirects
     useEffect(() => {
-      // Skip if not on client
-      if (!isClient) return;
+      if (!isClient || isLoading) return;
 
-      // Redirect to login if no user
+      console.log("withAuth: Auth check running", {
+        currentUser,
+        pathname: window.location.pathname,
+      });
+
+      // Handle case where no user is found
       if (!currentUser) {
+        console.log("withAuth: No user found, redirecting to login");
         router.push("/login");
         return;
       }
 
-      // Check role-based access
+      // Skip role check if no roles are specified
+      if (allowedRoles.length === 0) {
+        console.log("withAuth: No specific roles required for this page");
+        return;
+      }
+
+      // Check if current user has access
       const userRole = currentUser.role;
-      if (allowedRoles.length > 0 && !allowedRoles.includes(userRole)) {
-        if (userRole === "trainer") {
+      const hasAccess = allowedRoles.includes(userRole);
+
+      console.log(
+        `withAuth: Role check - ${userRole} access to page: ${hasAccess}`
+      );
+
+      // Only redirect if user doesn't have access
+      if (!hasAccess) {
+        // Check if we're already on appropriate page for the role
+        const currentPath = window.location.pathname;
+        const isAlreadyOnCorrectPage =
+          (userRole === "admin" && currentPath === "/trainer") ||
+          (userRole === "user" && currentPath === "/client");
+
+        if (isAlreadyOnCorrectPage) {
+          console.log(
+            "withAuth: Already on correct page for role, not redirecting"
+          );
+          return;
+        }
+
+        console.log(
+          `withAuth: Redirecting to appropriate page for role ${userRole}`
+        );
+        if (userRole === "admin") {
           router.push("/trainer");
-        } else if (userRole === "client") {
+        } else if (userRole === "user") {
           router.push("/client");
         } else {
           router.push("/login");
         }
       }
-    }, [isClient, currentUser,  router]);
+    }, [isClient, isLoading, currentUser, router, allowedRoles]);
 
-    if (
-      !isClient ||
-      !currentUser ||
-      (allowedRoles.length > 0 && !allowedRoles.includes(currentUser?.role))
-    ) {
-      return null;
+    if (isLoading) {
+      return <div>Loading authentication...</div>;
     }
 
     return <WrappedComponent {...props} />;

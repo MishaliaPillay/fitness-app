@@ -11,9 +11,6 @@ import {
 import { UserReducer } from "./reducer";
 import { useContext, useReducer } from "react";
 import {
-  getUsersError,
-  getUsersPending,
-  getUsersSuccess,
   getUserError,
   getUserPending,
   getUserSuccess,
@@ -27,19 +24,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [state, dispatch] = useReducer(UserReducer, INITIAL_STATE);
   // const instance = getAxiosInstance();
 
-  const getUsers = async () => {
-    dispatch(getUsersPending());
-    const endpoint = `https://fakestoreapi.com/Users`;
-    await axios(endpoint)
-      .then((response) => {
-        dispatch(getUsersSuccess(response.data));
-      })
-      .catch((error) => {
-        console.error(error);
-        dispatch(getUsersError());
-      });
-  };
-
   const getUser = async () => {
     dispatch(getUserPending());
     const endpoint =
@@ -48,9 +32,11 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       const token = sessionStorage.getItem("jwt")?.trim();
 
+      console.log("gettingusers");
+
       if (!token) {
         dispatch(getUserError());
-        return;
+        return null; // Return null instead of nothing
       }
 
       const response = await axios.get(endpoint, {
@@ -59,14 +45,15 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         },
       });
 
-    // console.log("User Data Received:", response.data);
       dispatch(getUserSuccess(response.data.data));
+      return response;
     } catch (error) {
       console.error(
         " Error fetching user details:",
         error.response?.data?.message || error
       );
       dispatch(getUserError());
+      return null; // Return null instead of nothing
     }
   };
 
@@ -77,7 +64,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       console.log("getting User data", user);
       const response = await axios.post<ILoginResponse>(endpoint, user);
-     // console.log("Response", response.data);
+      // console.log("Response", response.data);
       const token = response.data.data.token;
       if (token) {
         console.log("session This where token stored");
@@ -102,7 +89,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     <UserStateContext.Provider value={state}>
       <UserActionContext.Provider
         value={{
-          getUsers,
           getUser,
           verifyUser,
         }}
