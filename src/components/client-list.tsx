@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation"; // For navigation
 import { useTrainerActions, useTrainerState } from "@/providers/trainer";
 import { useUserState } from "@/providers/userlogin";
 import { Table, Button } from "antd";
+import type { ColumnsType } from "antd/es/table";
+import { Breakpoint } from "antd/es/_util/responsiveObserver";
 import { ITrainer } from "@/providers/trainer/context"; // Assuming ITrainer type
 
 const ClientList = () => {
@@ -20,21 +22,45 @@ const ClientList = () => {
     }
   }, [user?.id]);
 
-  if (userLoading || isPending) return <p>Loading clients...</p>;
+  if (userLoading || isPending)
+    return <p className="text-center p-4">Loading clients...</p>;
   if (userError || isError)
-    return <p className="text-red-500">Error fetching clients.</p>;
+    return (
+      <p className="text-red-500 text-center p-4">Error fetching clients.</p>
+    );
 
-  const columns = [
-    { title: "Name", dataIndex: "fullName", key: "fullName" },
-    { title: "Email", dataIndex: "email", key: "email" },
-    { title: "Date", dataIndex: "date", key: "date" },
-    { title: "Id", dataIndex: "_id", key: "_id" },
+  // Properly typed responsive columns configuration
+  const columns: ColumnsType<ITrainer> = [
+    {
+      title: "Name",
+      dataIndex: "fullName",
+      key: "fullName",
+      responsive: ["xs", "sm", "md", "lg", "xl"] as Breakpoint[],
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+      responsive: ["sm", "md", "lg", "xl"] as Breakpoint[],
+    },
+    {
+      title: "Date",
+      dataIndex: "date",
+      key: "date",
+      responsive: ["md", "lg", "xl"] as Breakpoint[],
+    },
+    {
+      title: "Contact Number",
+      dataIndex: "contactNumber",
+      key: "contactNumber",
+      responsive: ["lg", "xl"] as Breakpoint[],
+    },
   ];
 
-  // Adjusted onSelectChange to work with ITrainer[] instead of IClient[]
+  // Adjusted onSelectChange to work with ITrainer[]
   const onSelectChange = (
     newSelectedRowKeys: React.Key[],
-    selectedRows: ITrainer[] // Using ITrainer[] since that's the type of the dataSource
+    selectedRows: ITrainer[]
   ) => {
     if (newSelectedRowKeys.length > 1) return; // Ensure only one selection at a time
     setSelectedRowKeys(newSelectedRowKeys);
@@ -56,23 +82,36 @@ const ClientList = () => {
   };
 
   return (
-    <div className="p-4">
-      <h2 className="text-2xl font-semibold mb-4">Client List</h2>
-      <Table
-        columns={columns}
-        dataSource={trainers}
-        rowKey={(record) => record._id}
-        pagination={{ pageSize: 5 }}
-        rowSelection={rowSelection}
-      />
-      <Button
-        type="primary"
-        disabled={!selectedClient}
-        onClick={handleCreateMealPlan}
-        className="mt-4"
-      >
-        Create Meal Plan
-      </Button>
+    <div className="p-2 md:p-4 w-full">
+      <h2 className="text-xl md:text-2xl font-semibold mb-2 md:mb-4">
+        Client List
+      </h2>
+      <div className="overflow-x-auto">
+        <Table
+          columns={columns}
+          dataSource={trainers}
+          rowKey={(record) => record._id}
+          pagination={{
+            pageSize: 5,
+            responsive: true,
+            // Remove the window.innerWidth reference as it won't work server-side
+            size: "default",
+          }}
+          rowSelection={rowSelection}
+          size="middle"
+          scroll={{ x: "max-content" }}
+        />
+      </div>
+      <div className="flex justify-center md:justify-start mt-4">
+        <Button
+          type="primary"
+          disabled={!selectedClient}
+          onClick={handleCreateMealPlan}
+          className="w-full md:w-auto"
+        >
+          Create Meal Plan
+        </Button>
+      </div>
     </div>
   );
 };
