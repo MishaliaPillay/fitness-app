@@ -201,7 +201,7 @@ const FoodItems = () => {
       form.resetFields();
       getAllFood();
     } catch (error) {
-      message.error("Failed to create food item!");
+      message.error("Failed to create food item!",error);
     }
   };
 

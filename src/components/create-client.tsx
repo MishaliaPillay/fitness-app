@@ -249,7 +249,7 @@ export default function ClientForm() {
                 <TrophyOutlined
                   style={{ marginRight: "8px", color: "#1890ff" }}
                 />
-                Transform Your Clients' Fitness Journey
+                Transform Your Clients&apos; Fitness Journey
               </Title>
 
               <Paragraph style={{ fontSize: "16px" }}>
@@ -273,7 +273,7 @@ export default function ClientForm() {
                     />
                     <Title level={4}>Personalized Plans</Title>
                     <Text>
-                      Create custom workout routines tailored to each client's
+                      Create custom workout routines tailored to each client&apos;s
                       needs and goals
                     </Text>
                   </Card>
